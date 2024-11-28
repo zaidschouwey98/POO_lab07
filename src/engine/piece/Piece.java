@@ -6,15 +6,23 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public abstract class Piece {
-    private PlayerColor color;
+    private final PlayerColor color;
     private Coordinates coordinates;
-    private Movement[] pieceMovements;
-    private MovementRestriction[] pieceMovementRestrictions;
-    protected Piece(){
+    private final Movement[] pieceMovements;
+    private final MovementRestriction[] pieceMovementRestrictions;
 
+    protected Piece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
+        this.color = color;
+        this.coordinates = coordinates;
+        this.pieceMovements = pieceMovements;
+        this.pieceMovementRestrictions = pieceMovementRestrictions;
     }
+
+    public boolean canMoveTo(Coordinates destination) {
+        for (Movement movement : pieceMovements) {
+            //movement.can
+        }
+    }
+
+
 }
-
-
-
-
