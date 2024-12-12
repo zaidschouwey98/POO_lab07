@@ -28,5 +28,12 @@ public abstract class Piece {
         return false;
     }
 
-
+    public boolean moveTo(Coordinates<Integer> destination) {
+        if (canMoveTo(destination)) {
+            this.coordinates = destination;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
