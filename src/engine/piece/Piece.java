@@ -1,11 +1,13 @@
 package engine.piece;
 
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public abstract class Piece {
+    PieceType type;
     private final PlayerColor color;
     private Coordinates coordinates;
     private final Movement[] pieceMovements;
@@ -18,10 +20,13 @@ public abstract class Piece {
         this.pieceMovementRestrictions = pieceMovementRestrictions;
     }
 
+    public abstract PieceType getGraphicalType();
+
     public boolean canMoveTo(Coordinates destination) {
         for (Movement movement : pieceMovements) {
             //movement.can
         }
+        return true;
     }
 
 
