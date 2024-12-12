@@ -15,6 +15,14 @@ public class Board {
 		board = new Piece[height][width];
 	}
 
+	public void setPiece(int x, int y, Piece piece) {
+		try {
+			board[x][y] = piece;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new RuntimeException("Invalid position.");
+		}
+	}
+
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest) {
 		Piece p;
 		try {
