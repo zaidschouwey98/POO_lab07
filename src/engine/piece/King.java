@@ -8,7 +8,7 @@ import engine.movements.*;
 
 public class King extends Piece {
 	private boolean hasMoved;
-	public King (PlayerColor color, Coordinates coordinates){
+	public King (PlayerColor color, Coordinates<Integer> coordinates){
 		super(color, coordinates,
 			new Movement[] {
 				new AxialMovement(),

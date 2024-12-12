@@ -8,7 +8,7 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public class Rook extends Piece {
-    public Rook (PlayerColor color, Coordinates coordinates){
+    public Rook (PlayerColor color, Coordinates<Integer> coordinates){
         super(color, coordinates,
             new Movement[] {
                 new AxialMovement()

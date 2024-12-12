@@ -9,7 +9,7 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public class Queen extends Piece {
-    public Queen (PlayerColor color, Coordinates coordinates){
+    public Queen (PlayerColor color, Coordinates<Integer> coordinates){
         super(color, coordinates,
             new Movement[] {
                 new AxialMovement(),

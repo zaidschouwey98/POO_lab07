@@ -8,7 +8,7 @@ import engine.movements.MovementRestriction;
 
 public abstract class Piece {
     private final PlayerColor color;
-    private Coordinates coordinates;
+    private Coordinates<Integer> coordinates;
     private final Movement[] pieceMovements;
     private final MovementRestriction[] pieceMovementRestrictions;
 

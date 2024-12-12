@@ -6,7 +6,7 @@ import engine.Coordinates;
 import engine.movements.*;
 
 public class Pawn extends Piece {
-    public Pawn (PlayerColor color, Coordinates coordinates) {
+    public Pawn (PlayerColor color, Coordinates<Integer> coordinates) {
         super(color, coordinates,
             new Movement[] {
                 new AxialMovement()

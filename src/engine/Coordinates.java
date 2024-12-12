@@ -1,3 +1,3 @@
 package engine;
 
-public record Coordinates(double x, double y) {}
+public record Coordinates<T extends Number>(T x, T y) {}

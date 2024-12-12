@@ -15,16 +15,16 @@ public class ChessGame implements ChessController {
   @Override
   public void start(ChessView view) {
     this.board = new Piece[8][8];
-    for(int x = 0; x < 8; x++){
-      for(int y = 0; y < 8; y++){
-        if(y <= 1){
+
+    for (int x = 0; x < 8; x++) {
+      for (int y = 0; y < 8; y++) {
+        if (y <= 1){
           //White
-
-        } else if(y >= 6){
+          System.out.println("The whites play.");
+        } else if(y >= 6) {
           //Black
-
+          System.out.println("The blacks play.");
         }
-        this.board[4][7] = new King(PlayerColor.BLACK, new Coordinates(5,8));
       }
     }
 
@@ -37,7 +37,7 @@ public class ChessGame implements ChessController {
 
   @Override
   public boolean move(int fromX, int fromY, int toX, int toY) {
-    System.out.println(String.format("TO REMOVE : from (%d, %d) to (%d, %d)", fromX, fromY, toX, toY)); // TODO remove
+    System.out.printf("TO REMOVE : from (%d, %d) to (%d, %d)\n", fromX, fromY, toX, toY); // TODO remove
     return false; // TODO
   }
 
@@ -50,17 +50,17 @@ public class ChessGame implements ChessController {
     for (PlayerColor color : PlayerColor.values()) {
       pieceStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 0 : 7;
       pawnStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 1 : 6;
-      board[0][pieceStartRow] = new Rook(color,new Coordinates(0,pieceStartRow));
-      board[7][pieceStartRow] = new Rook(color,new Coordinates(7,pieceStartRow));
-      board[6][pieceStartRow] = new Knight(color,new Coordinates(6,pieceStartRow));
-      board[1][pieceStartRow] = new Knight(color,new Coordinates(1,pieceStartRow));
-      board[2][pieceStartRow] = new Bishop(color,new Coordinates(2,pieceStartRow));
-      board[5][pieceStartRow] = new Bishop(color,new Coordinates(5,pieceStartRow));
-      board[3][pieceStartRow] = new Queen(color,new Coordinates(3,pieceStartRow));
-      board[4][pieceStartRow] = new King(color,new Coordinates(4,pieceStartRow));
+      board[0][pieceStartRow] = new Rook(color, new Coordinates<>(0, pieceStartRow));
+      board[7][pieceStartRow] = new Rook(color,new Coordinates<>(7,pieceStartRow));
+      board[6][pieceStartRow] = new Knight(color,new Coordinates<>(6,pieceStartRow));
+      board[1][pieceStartRow] = new Knight(color,new Coordinates<>(1,pieceStartRow));
+      board[2][pieceStartRow] = new Bishop(color,new Coordinates<>(2,pieceStartRow));
+      board[5][pieceStartRow] = new Bishop(color,new Coordinates<>(5,pieceStartRow));
+      board[3][pieceStartRow] = new Queen(color,new Coordinates<>(3,pieceStartRow));
+      board[4][pieceStartRow] = new King(color,new Coordinates<>(4,pieceStartRow));
 
       for (int i = 0 ; i < 8 ; ++i){
-        board[i][pawnStartRow] = new Pawn(color,new Coordinates(i,pieceStartRow));
+        board[i][pawnStartRow] = new Pawn(color,new Coordinates<>(i,pieceStartRow));
       }
     }
     boardToView();

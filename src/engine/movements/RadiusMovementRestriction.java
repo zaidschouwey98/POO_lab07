@@ -11,9 +11,9 @@ public class RadiusMovementRestriction implements MovementRestriction {
 	}
 
 	@Override
-	public boolean canMove(Coordinates from, Coordinates to) {
-		int xDiff = (int) Math.abs(from.x() - to.x());
-		int yDiff = (int) Math.abs(from.y() - to.y());
+	public boolean canMove(Coordinates<Integer> from, Coordinates<Integer> to) {
+		int xDiff = Math.abs(from.x() - to.x());
+		int yDiff = Math.abs(from.y() - to.y());
 
 		return xDiff <= movementRadius && yDiff <= movementRadius;
 	}
