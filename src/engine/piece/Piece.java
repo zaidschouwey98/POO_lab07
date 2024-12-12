@@ -7,7 +7,6 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public abstract class Piece {
-    PieceType type;
     private final PlayerColor color;
     private Coordinates coordinates;
     private final Movement[] pieceMovements;
@@ -26,7 +25,7 @@ public abstract class Piece {
         for (Movement movement : pieceMovements) {
             //movement.can
         }
-        return true;
+        return false;
     }
 
 
