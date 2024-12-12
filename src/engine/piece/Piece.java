@@ -22,6 +22,7 @@ public abstract class Piece {
         for (Movement movement : pieceMovements) {
             //movement.can
         }
+        return false;
     }
 
 
