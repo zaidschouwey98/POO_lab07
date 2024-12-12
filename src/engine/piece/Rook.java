@@ -8,16 +8,16 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public class Rook extends Piece {
-    public Rook (PlayerColor color, Coordinates<Integer> coordinates){
-        super(color, coordinates,
-            new Movement[] {
-                new AxialMovement()
-            },
-            new MovementRestriction[] { }
-        );
-    }
-    @Override
-    public PieceType getGraphicalType() {
-        return PieceType.ROOK;
-    }
+	public Rook (PlayerColor color, Coordinates<Integer> coordinates){
+		super(color, coordinates,
+			new Movement[] {
+				new AxialMovement()
+			},
+			new MovementRestriction[] { }
+		);
+	}
+	@Override
+	public PieceType getGraphicalType() {
+		return PieceType.ROOK;
+	}
 }

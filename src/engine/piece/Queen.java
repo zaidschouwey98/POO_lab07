@@ -9,17 +9,17 @@ import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
 public class Queen extends Piece {
-    public Queen (PlayerColor color, Coordinates<Integer> coordinates){
-        super(color, coordinates,
-            new Movement[] {
-                new AxialMovement(),
-                new DiagonalMovement()
-            },
-            new MovementRestriction[] { }
-        );
-    }
-    @Override
-    public PieceType getGraphicalType() {
-        return PieceType.QUEEN;
-    }
+	public Queen (PlayerColor color, Coordinates<Integer> coordinates){
+		super(color, coordinates,
+			new Movement[] {
+				new AxialMovement(),
+				new DiagonalMovement()
+			},
+			new MovementRestriction[] { }
+		);
+	}
+	@Override
+	public PieceType getGraphicalType() {
+		return PieceType.QUEEN;
+	}
 }
