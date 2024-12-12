@@ -18,7 +18,7 @@ public class Board {
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest) {
 		Piece p;
 		try {
-			p = board[dest.x()][dest.y()];
+			p = board[from.x()][from.y()];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
