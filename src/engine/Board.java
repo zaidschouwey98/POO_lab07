@@ -15,7 +15,7 @@ public class Board {
 		board = new Piece[height][width];
 	}
 
-	public boolean move(Piece piece, Coordinates<Integer> dest) {
+	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest) {
 		Piece p;
 		try {
 			p = board[dest.x()][dest.y()];
