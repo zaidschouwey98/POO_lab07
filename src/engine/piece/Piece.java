@@ -12,7 +12,7 @@ public abstract class Piece {
     private final Movement[] pieceMovements;
     private final MovementRestriction[] pieceMovementRestrictions;
 
-    protected Piece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
+    protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
         this.color = color;
         this.coordinates = coordinates;
         this.pieceMovements = pieceMovements;
@@ -21,7 +21,7 @@ public abstract class Piece {
 
     public abstract PieceType getGraphicalType();
 
-    public boolean canMoveTo(Coordinates destination) {
+    public boolean canMoveTo(Coordinates<Integer> destination) {
         for (Movement movement : pieceMovements) {
             //movement.can
         }
