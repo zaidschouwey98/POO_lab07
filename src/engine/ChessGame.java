@@ -4,8 +4,7 @@ import chess.ChessController;
 import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.piece.King;
-import engine.piece.Piece;
+import engine.piece.*;
 
 public class ChessGame implements ChessController {
 
@@ -46,7 +45,25 @@ public class ChessGame implements ChessController {
   public void newGame() {
     view.displayMessage("new game (TO REMOVE)"); // TODO
     // view.putPiece(PieceType.KING, PlayerColor.BLACK, 3, 4); // TODO exemple uniquement
+    int pieceStartRow;
+    int pawnStartRow;
+    for (PlayerColor color : PlayerColor.values()) {
+      pieceStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 0 : 7;
+      pawnStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 1 : 6;
+      board[0][pieceStartRow] = new Rook(color,new Coordinates(0,pieceStartRow));
+      board[7][pieceStartRow] = new Rook(color,new Coordinates(7,pieceStartRow));
+      board[6][pieceStartRow] = new Knight(color,new Coordinates(6,pieceStartRow));
+      board[1][pieceStartRow] = new Knight(color,new Coordinates(1,pieceStartRow));
+      board[2][pieceStartRow] = new Bishop(color,new Coordinates(2,pieceStartRow));
+      board[5][pieceStartRow] = new Bishop(color,new Coordinates(5,pieceStartRow));
+      board[3][pieceStartRow] = new Queen(color,new Coordinates(3,pieceStartRow));
+      board[4][pieceStartRow] = new King(color,new Coordinates(4,pieceStartRow));
 
+      for (int i = 0 ; i < 8 ; ++i){
+        board[i][pawnStartRow] = new Pawn(color,new Coordinates(i,pieceStartRow));
+      }
+    }
+    boardToView();
   }
 
   public void boardToView(){
@@ -59,4 +76,5 @@ public class ChessGame implements ChessController {
       }
     }
   }
+
 }
