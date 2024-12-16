@@ -27,9 +27,10 @@ public class Board {
 		try {
 			p = board[from.x()][from.y()];
 
-			p.moveTo(dest);
-			board[dest.x()][dest.y()] = p;
-			board[from.x()][from.y()] = null;
+			if (p.moveTo(dest)) {
+				board[dest.x()][dest.y()] = p;
+				board[from.x()][from.y()] = null;
+			}
 		} catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
 			return false;
 		}
