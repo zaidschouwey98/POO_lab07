@@ -1,11 +1,7 @@
 package engine;
 
 import chess.ChessView;
-import chess.PieceType;
-import chess.PlayerColor;
 import engine.piece.Piece;
-
-import java.util.Arrays;
 
 public class Board {
 	private final Piece[][] board;
