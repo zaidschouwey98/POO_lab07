@@ -34,8 +34,14 @@ public class ChessGame implements ChessController {
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
-			pieceStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 0 : 7;
-			pawnStartRow = color.ordinal() == PlayerColor.WHITE.ordinal() ? 1 : 6;
+			if (color == PlayerColor.WHITE) {
+				pieceStartRow = 0;
+				pawnStartRow = 1;
+			} else {
+				pieceStartRow = 7;
+				pawnStartRow = 6;
+			}
+
 			board.setPiece(0, pieceStartRow, new Rook(color, new Coordinates<>(0, pieceStartRow)));
 			board.setPiece(7, pieceStartRow, new Rook(color,new Coordinates<>(7,pieceStartRow)));
 			board.setPiece(6, pieceStartRow, new Knight(color,new Coordinates<>(6,pieceStartRow)));
