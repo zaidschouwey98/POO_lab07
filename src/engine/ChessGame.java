@@ -23,8 +23,13 @@ public class ChessGame implements ChessController {
 
 	@Override
 	public boolean move(int fromX, int fromY, int toX, int toY) {
-		System.out.printf("TO REMOVE : from (%d, %d) to (%d, %d)\n", fromX, fromY, toX, toY); // TODO remove
-		return false; // TODO
+		Coordinates<Integer> from = new Coordinates<>(fromX, fromY);
+		Coordinates<Integer> to = new Coordinates<>(toX, toY);
+
+		boolean canMove = board.move(from, to);
+		board.updateView(view);
+
+		return canMove;
 	}
 
 	@Override
