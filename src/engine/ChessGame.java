@@ -30,7 +30,6 @@ public class ChessGame implements ChessController {
 	@Override
 	public void newGame() {
 		view.displayMessage("new game (TO REMOVE)"); // TODO
-		// view.putPiece(PieceType.KING, PlayerColor.BLACK, 3, 4); // TODO exemple uniquement
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
@@ -43,16 +42,16 @@ public class ChessGame implements ChessController {
 			}
 
 			board.setPiece(0, pieceStartRow, new Rook(color, new Coordinates<>(0, pieceStartRow)));
-			board.setPiece(7, pieceStartRow, new Rook(color,new Coordinates<>(7,pieceStartRow)));
-			board.setPiece(6, pieceStartRow, new Knight(color,new Coordinates<>(6,pieceStartRow)));
-			board.setPiece(1, pieceStartRow, new Knight(color,new Coordinates<>(1,pieceStartRow)));
-			board.setPiece(2, pieceStartRow,  new Bishop(color,new Coordinates<>(2,pieceStartRow)));
-			board.setPiece(5, pieceStartRow, new Bishop(color,new Coordinates<>(5,pieceStartRow)));
-			board.setPiece(3, pieceStartRow, new Queen(color,new Coordinates<>(3,pieceStartRow)));
-			board.setPiece(4, pieceStartRow, new King(color,new Coordinates<>(4,pieceStartRow)));
+			board.setPiece(7, pieceStartRow, new Rook(color, new Coordinates<>(7, pieceStartRow)));
+			board.setPiece(6, pieceStartRow, new Knight(color, new Coordinates<>(6, pieceStartRow)));
+			board.setPiece(1, pieceStartRow, new Knight(color, new Coordinates<>(1, pieceStartRow)));
+			board.setPiece(2, pieceStartRow, new Bishop(color, new Coordinates<>(2, pieceStartRow)));
+			board.setPiece(5, pieceStartRow, new Bishop(color, new Coordinates<>(5, pieceStartRow)));
+			board.setPiece(3, pieceStartRow, new Queen(color, new Coordinates<>(3, pieceStartRow)));
+			board.setPiece(4, pieceStartRow, new King(color, new Coordinates<>(4, pieceStartRow)));
 
 			for (int i = 0 ; i < 8 ; ++i){
-				board.setPiece(i, pawnStartRow, new Pawn(color,new Coordinates<>(i,pieceStartRow)));
+				board.setPiece(i, pawnStartRow, new Pawn(color, new Coordinates<>(i, pieceStartRow)));
 			}
 		}
 		board.updateView(view);

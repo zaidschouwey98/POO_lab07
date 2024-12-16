@@ -41,4 +41,8 @@ public abstract class Piece {
 			return false;
 		}
 	}
+
+	public PlayerColor getColor() {
+		return color;
+	}
 }

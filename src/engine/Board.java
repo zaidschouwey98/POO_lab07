@@ -35,11 +35,11 @@ public class Board {
 	}
 
 	public void updateView(ChessView view) {
-		for (int i = 0 ; i < board.length ; ++i){
-			for(int j = 0 ; j < board[0].length ; ++j){
-				if(board[i][j] != null){
-					PieceType p = board[i][j].getGraphicalType();
-					view.putPiece(p, PlayerColor.BLACK,i,j);
+		for (int i = 0; i < board.length; ++i) {
+			for (int j = 0; j < board[0].length; ++j) {
+				Piece p = board[i][j];
+				if (board[i][j] != null) {
+					view.putPiece(p.getGraphicalType(), p.getColor(), i, j);
 				}
 			}
 		}
