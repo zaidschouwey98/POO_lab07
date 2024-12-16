@@ -1,5 +1,6 @@
 package engine.piece;
 
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.DiagonalMovement;
@@ -10,11 +11,16 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Bishop extends Piece {
-    public Bishop (PlayerColor color, Coordinates coordinates){
-        super(color, coordinates,
-            new Movement[] { new DiagonalMovement() },
-            new MovementRestriction[] { }
-        );
-    }
+	public Bishop (PlayerColor color, Coordinates<Integer> coordinates){
+		super(color, coordinates,
+			new Movement[] { new DiagonalMovement() },
+			new MovementRestriction[] { }
+		);
+	}
+
+	@Override
+	public PieceType getGraphicalType() {
+		return PieceType.BISHOP;
+	}
 }
 
