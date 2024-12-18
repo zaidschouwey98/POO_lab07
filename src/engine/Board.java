@@ -69,15 +69,11 @@ public class Board {
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
 		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
-		System.out.println("dx is " + dx + " dy is " + dy);
 
 		int x = from.x() + dx;
 		int y = from.y() + dy;
 
-		System.out.println("x is : " + x + ", y is : " + y);
-
 		while (!(x == dest.x() && y == dest.y())) {
-			System.out.println("Nouveau tour de boucle");
 			if (board[x][y] != null) return true;
 
 			x += dx;
