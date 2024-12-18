@@ -34,6 +34,12 @@ public class Board {
 
 					return false;
 				}
+				Piece p2 = board[dest.x()][dest.y()];
+				if (p2 != null && p2.getColor() == p.getColor()) {
+					p.moveTo(from);
+
+					return false;
+				}
 
 				board[dest.x()][dest.y()] = p;
 				board[from.x()][from.y()] = null;
