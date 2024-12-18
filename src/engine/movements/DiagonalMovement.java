@@ -5,6 +5,6 @@ import engine.Coordinates;
 public class DiagonalMovement implements Movement {
 	@Override
 	public boolean canMove(Coordinates<Integer> from, Coordinates<Integer> to) {
-		return from.x() - to.x() == from.y() - to.y();
+		return Math.abs(from.x() - to.x()) == Math.abs(from.y() - to.y());
 	}
 }
