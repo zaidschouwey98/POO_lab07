@@ -61,25 +61,17 @@ public class Board {
 
 
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
-		/*int dx = (int) Math.signum(dest.x() - from.x());
+		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
 
 		int x = from.x() + dx;
 		int y = from.y() + dy;
 
-		for (Piece p : whitePieces) {
-			if ()
-		}
-
-		while (!(x == dest.x() && y == dest.y())) {
-			if (board[x][y] != null) return true;
-
+		while (x != dest.x() || y != dest.y()) {
+			if(getPieceAt(new Coordinates<>(x, y)) != null) return true;
 			x += dx;
 			y += dy;
 		}
-
-		return false;*/
-
 		return false;
 	}
 
