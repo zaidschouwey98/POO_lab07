@@ -33,16 +33,19 @@ public abstract class Piece {
 		return false;
 	}
 
-	public boolean moveTo(Coordinates<Integer> destination) {
-		if (canMoveTo(destination)) {
-			this.coordinates = destination;
-			return true;
-		} else {
-			return false;
-		}
+	public boolean canCaptureAt(Coordinates<Integer> destination) {
+		return canMoveTo(destination);
+	}
+
+	public void moveTo(Coordinates<Integer> destination) {
+		this.coordinates = destination;
 	}
 
 	public PlayerColor getColor() {
 		return color;
+	}
+
+	public Coordinates<Integer> getCoordinates() {
+		return coordinates;
 	}
 }

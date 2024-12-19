@@ -13,7 +13,7 @@ public class ChessGame implements ChessController {
 
 	@Override
 	public void start(ChessView view) {
-		this.board = new Board(8, 8);
+		this.board = new Board();
 
 		this.view = view;
 		view.startView();
@@ -46,17 +46,17 @@ public class ChessGame implements ChessController {
 				pawnStartRow = 6;
 			}
 
-			board.setPiece(0, pieceStartRow, new Rook(color, new Coordinates<>(0, pieceStartRow)));
-			board.setPiece(7, pieceStartRow, new Rook(color, new Coordinates<>(7, pieceStartRow)));
-			board.setPiece(6, pieceStartRow, new Knight(color, new Coordinates<>(6, pieceStartRow)));
-			board.setPiece(1, pieceStartRow, new Knight(color, new Coordinates<>(1, pieceStartRow)));
-			board.setPiece(2, pieceStartRow, new Bishop(color, new Coordinates<>(2, pieceStartRow)));
-			board.setPiece(5, pieceStartRow, new Bishop(color, new Coordinates<>(5, pieceStartRow)));
-			board.setPiece(3, pieceStartRow, new Queen(color, new Coordinates<>(3, pieceStartRow)));
-			board.setPiece(4, pieceStartRow, new King(color, new Coordinates<>(4, pieceStartRow)));
+			board.addPiece(new Rook(color, new Coordinates<>(0, pieceStartRow)));
+			board.addPiece(new Rook(color, new Coordinates<>(7, pieceStartRow)));
+			board.addPiece(new Knight(color, new Coordinates<>(6, pieceStartRow)));
+			board.addPiece(new Knight(color, new Coordinates<>(1, pieceStartRow)));
+			board.addPiece(new Bishop(color, new Coordinates<>(2, pieceStartRow)));
+			board.addPiece(new Bishop(color, new Coordinates<>(5, pieceStartRow)));
+			board.addPiece(new Queen(color, new Coordinates<>(3, pieceStartRow)));
+			board.addPiece(new King(color, new Coordinates<>(4, pieceStartRow)));
 
 			for (int i = 0 ; i < 8 ; ++i){
-				board.setPiece(i, pawnStartRow, new Pawn(color, new Coordinates<>(i, pieceStartRow)));
+				board.addPiece(new Pawn(color, new Coordinates<>(i, pawnStartRow)));
 			}
 		}
 		board.updateView(view);

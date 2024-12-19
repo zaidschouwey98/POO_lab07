@@ -1,60 +1,54 @@
 package engine;
 
 import chess.ChessView;
+import chess.PlayerColor;
 import engine.piece.Knight;
 import engine.piece.Piece;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Board {
-	private final Piece[][] board;
+	private static final int WHITE = PlayerColor.WHITE.ordinal();
+	private static final int BLACK = PlayerColor.BLACK.ordinal();
 
-	public Board(int width, int height) {
-		if (width < 1 || height < 1)
-			throw new IllegalArgumentException("Width and height must be greater than 0.");
+	private final List<List<Piece>> pieces = List.of(
+		new LinkedList<>(), // white pieces
+		new LinkedList<>()	// black pieces
+	);
 
-		board = new Piece[height][width];
-	}
-
-	public void setPiece(int x, int y, Piece piece) {
-		try {
-			board[x][y] = piece;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new RuntimeException("Invalid position.");
-		}
+	public void addPiece(Piece piece) {
+		pieces.get(piece.getColor().ordinal()).add(piece);
 	}
 
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest) {
-		Piece p;
+		Piece p = getPieceAt(from);
+		Piece target = getPieceAt(dest);
 
-		try {
-			p = board[from.x()][from.y()];
-
-			if (p.moveTo(dest)) {
-				if (!(p instanceof Knight) && isPathObstructed(from, dest)) {
-					p.moveTo(from);
-
-					return false;
-				}
-				Piece p2 = board[dest.x()][dest.y()];
-				if (p2 != null && p2.getColor() == p.getColor()) {
-					p.moveTo(from);
-
-					return false;
-				}
-
-				board[dest.x()][dest.y()] = p;
-				board[from.x()][from.y()] = null;
-			}
-		} catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-			return false;
+		if (p == null) return false;
+		if (!(p instanceof Knight) && isPathObstructed(from, dest)) return false;
+		if (target == null) {
+			if (!p.canMoveTo(dest)) return false;
+		} else {
+			if (target.getColor() == p.getColor()) return false;
+			else if (!p.canCaptureAt(target.getCoordinates())) return false;
 		}
+
+		p.moveTo(dest);
+
+		// vérifier que bouger la pièce ne mettrait pas son roi en échec
+		// si la pièce il y a des vérifications à faire en plus (voir google docs)
+
+		if (target != null)
+			pieces.get(target.getColor().ordinal()).remove(target);
 
 		return true;
 	}
 
 	public void updateView(ChessView view) {
-		for (int i = 0; i < board.length; ++i) {
-			for (int j = 0; j < board[0].length; ++j) {
-				Piece p = board[i][j];
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
+				Piece p = getPieceAt(new Coordinates<>(i, j));
 				if (p == null) {
 					view.removePiece(i, j);
 				} else {
@@ -67,11 +61,15 @@ public class Board {
 
 
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
-		int dx = (int) Math.signum(dest.x() - from.x());
+		/*int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
 
 		int x = from.x() + dx;
 		int y = from.y() + dy;
+
+		for (Piece p : whitePieces) {
+			if ()
+		}
 
 		while (!(x == dest.x() && y == dest.y())) {
 			if (board[x][y] != null) return true;
@@ -80,6 +78,20 @@ public class Board {
 			y += dy;
 		}
 
+		return false;*/
+
 		return false;
+	}
+
+	private Piece getPieceAt(Coordinates<Integer> pos){
+		for (Piece p : pieces.get(WHITE)) {
+			if (pos.equals(p.getCoordinates()))
+				return p;
+		}
+		for (Piece p : pieces.get(BLACK)) {
+			if (pos.equals(p.getCoordinates()))
+				return p;
+		}
+		return null;
 	}
 }
