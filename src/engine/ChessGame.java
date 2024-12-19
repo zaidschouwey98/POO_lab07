@@ -34,7 +34,6 @@ public class ChessGame implements ChessController {
 
 	@Override
 	public void newGame() {
-		view.displayMessage("new game (TO REMOVE)"); // TODO
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
