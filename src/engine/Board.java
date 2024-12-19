@@ -75,7 +75,7 @@ public class Board {
 		return false;
 	}
 
-	private Piece getPieceAt(Coordinates<Integer> pos){
+	public Piece getPieceAt(Coordinates<Integer> pos){
 		for (Piece p : pieces.get(WHITE)) {
 			if (pos.equals(p.getCoordinates()))
 				return p;

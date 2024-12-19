@@ -8,7 +8,7 @@ import engine.piece.*;
 public class ChessGame implements ChessController {
 
 	private ChessView view;
-
+	private boolean whiteTurn = true;
 	private Board board;
 
 	@Override
@@ -25,10 +25,12 @@ public class ChessGame implements ChessController {
 	public boolean move(int fromX, int fromY, int toX, int toY) {
 		Coordinates<Integer> from = new Coordinates<>(fromX, fromY);
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
-
+		if(board.getPieceAt(from) == null || (whiteTurn && board.getPieceAt(from).getColor() != PlayerColor.WHITE || !whiteTurn && board.getPieceAt(from).getColor() != PlayerColor.BLACK)){
+			return false;
+		}
 		boolean canMove = board.move(from, to);
 		board.updateView(view);
-
+		whiteTurn = !whiteTurn;
 		return canMove;
 	}
 
