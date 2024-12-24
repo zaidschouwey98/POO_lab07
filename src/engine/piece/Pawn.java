@@ -31,7 +31,6 @@ public class Pawn extends Piece {
 		for (var movement : captureRestrictions) {
 			if (!movement.canMove(getCoordinates(), at)) return false;
 		}
-
 		return true;
 	}
 

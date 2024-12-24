@@ -22,14 +22,14 @@ public abstract class Piece {
 	public abstract PieceType getGraphicalType();
 
 	public boolean canMoveTo(Coordinates<Integer> destination) {
-        for (MovementRestriction restriction : pieceMovementRestrictions)
-            if (!restriction.canMove(this.coordinates, destination))
-                return false;
-
+		for (MovementRestriction restriction : pieceMovementRestrictions)
+            if (!restriction.canMove(this.coordinates, destination)) {
+				return false;
+			}
         for (Movement movement : pieceMovements)
-            if (movement.canMove(this.coordinates, destination))
-                return true;
-
+            if (movement.canMove(this.coordinates, destination)) {
+				return true;
+			}
 		return false;
 	}
 

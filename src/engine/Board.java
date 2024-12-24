@@ -26,11 +26,16 @@ public class Board {
 			kings[piece.getColor().ordinal()] = piece;
 	}
 
+	/**
+	 * Tries to move a piece from "from" to "dest"
+	 * @param from start coordinates
+	 * @param dest destination coordinates
+	 * @param whiteTurn boolean representing if white is to  (TODO why is it needed ?)
+	 * @return boolean representing whether the piece was moved or not
+	 */
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest, boolean whiteTurn) {
 		Piece p = getPieceAt(from);
 		Piece target = getPieceAt(dest);
-
-
 
 		if (p == null) return false;
 		if (!(p instanceof Knight) && isPathObstructed(from, dest)) return false;
@@ -41,29 +46,31 @@ public class Board {
 			else if (!p.canCaptureAt(target.getCoordinates())) return false;
 		}
 
-
-
 		// vérifier que bouger la pièce ne mettrait pas son roi en échec
 		// si la pièce il y a des vérifications à faire en plus (voir google docs)
 		boolean isKing = p instanceof King;
 		// Check for every opponent pieces
-		for(Piece oppenentPiece : whiteTurn ? pieces.get(BLACK) : pieces.get(WHITE)) {
+
+		for (Piece oppenentPiece : (whiteTurn ? pieces.get(BLACK) : pieces.get(WHITE))) {
 			// Check if any opponent piece can capture the king
+			/*
+			// TODO this piece of code is commented while we wait to do it better
 			if(!isPathObstructed(oppenentPiece.getCoordinates(), kings[whiteTurn ? 0 : 1].getCoordinates()) && oppenentPiece.canMoveTo(kings[whiteTurn ? 0 : 1].getCoordinates())){
 				// In check
 				System.out.println("IN CHECK");
 			}
+			*/
 			if(isKing && oppenentPiece.canCaptureAt(dest)){
 				// Illegal move
 				System.out.println("Illegal move");
 			}
 		}
+
 		if (target != null)
 			pieces.get(target.getColor().ordinal()).remove(target);
 
-
-
 		p.moveTo(dest);
+
 		return true;
 	}
 
@@ -81,7 +88,13 @@ public class Board {
 	}
 
 
-
+	/**
+	 * Verifies that path between a coordinate to another is obstructed
+	 * @param from
+	 * @param dest
+	 * @return
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
 		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
@@ -89,6 +102,7 @@ public class Board {
 		int x = from.x() + dx;
 		int y = from.y() + dy;
 
+		// * infinite loop here
 		while (x != dest.x() || y != dest.y()) {
 			if(getPieceAt(new Coordinates<>(x, y)) != null) return true;
 			x += dx;

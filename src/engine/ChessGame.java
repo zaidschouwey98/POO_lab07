@@ -25,17 +25,23 @@ public class ChessGame implements ChessController {
 	public boolean move(int fromX, int fromY, int toX, int toY) {
 		Coordinates<Integer> from = new Coordinates<>(fromX, fromY);
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
-		if(board.getPieceAt(from) == null || (whiteTurn && board.getPieceAt(from).getColor() != PlayerColor.WHITE || !whiteTurn && board.getPieceAt(from).getColor() != PlayerColor.BLACK)){
+
+		Piece movingPiece = board.getPieceAt(from);
+		if(movingPiece == null || pieceNotInPlayingTeam(movingPiece)) {
 			return false;
 		}
-		boolean canMove = board.move(from, to);
+		boolean moveWasDone = board.move(from, to, whiteTurn);
+		if (moveWasDone) {
+			whiteTurn = !whiteTurn;
+		}
 		board.updateView(view);
-		whiteTurn = !whiteTurn;
-		return canMove;
+		return moveWasDone;
 	}
 
 	@Override
 	public void newGame() {
+		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
+		whiteTurn = true;
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
@@ -61,5 +67,14 @@ public class ChessGame implements ChessController {
 			}
 		}
 		board.updateView(view);
+	}
+
+	/**
+	 * Verifies that a piece is in the currently playing team
+	 * @param piece the piece to check
+	 * @return boolean representing if the piece is in the playing team
+	 */
+	private boolean pieceNotInPlayingTeam(Piece piece) {
+		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
 	}
 }
