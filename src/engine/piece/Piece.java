@@ -8,9 +8,11 @@ import engine.movements.MovementRestriction;
 
 public abstract class Piece {
 	private final PlayerColor color;
-	private Coordinates<Integer> coordinates;
+	protected Coordinates<Integer> coordinates;
 	private final Movement[] pieceMovements;
-	private final MovementRestriction[] pieceMovementRestrictions;
+
+	// TODO need something mutable, so that we can change it for the pawn
+	protected final MovementRestriction[] pieceMovementRestrictions;
 
 	protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
 		this.color = color;
@@ -45,6 +47,10 @@ public abstract class Piece {
 		this.coordinates = destination;
 	}
 
+	/**
+	 * Gets the color of the piece
+	 * @return the color of the piece
+	 */
 	public PlayerColor getColor() {
 		return color;
 	}
