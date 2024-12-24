@@ -40,12 +40,16 @@ public class Pawn extends Piece {
 	public void moveTo(Coordinates<Integer> destination) {
 		if (!hasMoved()) {
 			setHasMoved(false);
-			// TODO put a new radius movement for the pawn
-			/*
-			for (MovementRestriction restriction : this.pieceMovementRestrictions){
 
+			// removing the RadiusMovement restriction and assigning a new one
+			// assuming there is only one RadiusMovementRestriction assigned to the pawn
+			for (int i = 0 ; i < this.pieceMovementRestrictions.size() ; ++i){
+				if (this.pieceMovementRestrictions.get(i) instanceof RadiusMovementRestriction) {
+					this.pieceMovementRestrictions.remove(i);
+					break;
+				}
 			}
-			*/
+			this.pieceMovementRestrictions.add(new RadiusMovementRestriction(1));
 		}
 		super.moveTo(destination);
 	}

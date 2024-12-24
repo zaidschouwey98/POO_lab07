@@ -6,19 +6,26 @@ import engine.Coordinates;
 import engine.movements.Movement;
 import engine.movements.MovementRestriction;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 public abstract class Piece {
 	private final PlayerColor color;
 	protected Coordinates<Integer> coordinates;
 	private final Movement[] pieceMovements;
 
 	// TODO need something mutable, so that we can change it for the pawn
-	protected final MovementRestriction[] pieceMovementRestrictions;
+	//protected final MovementRestriction[] pieceMovementRestrictions;
+	protected LinkedList<MovementRestriction> pieceMovementRestrictions;
 
 	protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
 		this.color = color;
 		this.coordinates = coordinates;
 		this.pieceMovements = pieceMovements;
-		this.pieceMovementRestrictions = pieceMovementRestrictions;
+
+		// this.pieceMovementRestrictions = pieceMovementRestrictions;
+		this.pieceMovementRestrictions = new LinkedList<>();
+		if (pieceMovementRestrictions != null) this.pieceMovementRestrictions.addAll(Arrays.asList(pieceMovementRestrictions));
 	}
 
 	public abstract PieceType getGraphicalType();
