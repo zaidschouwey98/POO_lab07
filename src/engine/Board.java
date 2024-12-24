@@ -51,6 +51,7 @@ public class Board {
 		boolean isKing = p instanceof King;
 		// Check for every opponent pieces
 
+
 		for (Piece oppenentPiece : (whiteTurn ? pieces.get(BLACK) : pieces.get(WHITE))) {
 			// Check if any opponent piece can capture the king
 			/*
@@ -62,9 +63,11 @@ public class Board {
 			*/
 			if(isKing && oppenentPiece.canCaptureAt(dest)){
 				// Illegal move
-				System.out.println("Illegal move");
+				System.out.println("Illegal move, king could be attacked here");
+				return false;
 			}
 		}
+
 
 		if (target != null)
 			pieces.get(target.getColor().ordinal()).remove(target);

@@ -35,6 +35,9 @@ public class ChessGame implements ChessController {
 			whiteTurn = !whiteTurn;
 		}
 		board.updateView(view);
+
+		// this print is for dev purposes only
+		System.out.println(whiteTurn ? "White to play" : "Black to play");
 		return moveWasDone;
 	}
 

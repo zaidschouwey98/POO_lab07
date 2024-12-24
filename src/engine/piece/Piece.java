@@ -37,6 +37,10 @@ public abstract class Piece {
 		return canMoveTo(destination);
 	}
 
+	/**
+	 * Definitely moves to piece to a destination
+	 * @param destination the destination
+	 */
 	public void moveTo(Coordinates<Integer> destination) {
 		this.coordinates = destination;
 	}
