@@ -42,6 +42,12 @@ public abstract class Piece {
 		return false;
 	}
 
+	/**
+	 * Check if the piece could capture at the destination REGARDLESS OF THE FACT THAT THE PATH
+	 * IS CLEAR OR NOT
+	 * @param destination the target of the capture
+	 * @return boolean that represents if the piece can capture at dest
+	 */
 	public boolean canCaptureAt(Coordinates<Integer> destination) {
 		return canMoveTo(destination);
 	}
