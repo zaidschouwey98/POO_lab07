@@ -20,6 +20,9 @@ public class Board {
 			new LinkedList<>()	// black pieces
 	);
 
+
+
+
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
 		if(piece instanceof King)
@@ -30,7 +33,7 @@ public class Board {
 	 * Tries to move a piece from "from" to "dest"
 	 * @param from start coordinates
 	 * @param dest destination coordinates
-	 * @param whiteTurn boolean representing if white is to  (TODO why is it needed ?)
+	 * @param whiteTurn boolean representing if white is to play
 	 * @return boolean representing whether the piece was moved or not
 	 */
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest, boolean whiteTurn) {
@@ -45,35 +48,38 @@ public class Board {
 			if (target.getColor() == p.getColor()) return false;
 			else if (!p.canCaptureAt(target.getCoordinates())) return false;
 		}
+		// check that our King would not be checked after the move
 
-		// vérifier que bouger la pièce ne mettrait pas son roi en échec
-		// si la pièce il y a des vérifications à faire en plus (voir google docs)
-		boolean isKing = p instanceof King;
-		// Check for every opponent pieces
+		if (target != null) {
+			target.moveTo(new Coordinates<>(-1, -1));
+		}
+		p.moveTo(dest);
 
-
+		Coordinates<Integer> playingKingCords = kings[whiteTurn ? 0 : 1].getCoordinates();
 		for (Piece oppenentPiece : (whiteTurn ? pieces.get(BLACK) : pieces.get(WHITE))) {
-			// Check if any opponent piece can capture the king
-			/*
-			// TODO this piece of code is commented while we wait to do it better
-			if(!isPathObstructed(oppenentPiece.getCoordinates(), kings[whiteTurn ? 0 : 1].getCoordinates()) && oppenentPiece.canMoveTo(kings[whiteTurn ? 0 : 1].getCoordinates())){
-				// In check
-				System.out.println("IN CHECK");
-			}
-			*/
-			if(isKing && oppenentPiece.canCaptureAt(dest)){
-				// Illegal move
-				System.out.println("Illegal move, king could be attacked here");
+			// vérifier capture at la position du roi
+			boolean opponentCanCapture = oppenentPiece.canCaptureAt(playingKingCords);
+			if (opponentCanCapture && !isPathObstructed(oppenentPiece.getCoordinates(), playingKingCords)){
+				System.out.println("Illegal move, your king would get checked");
+				// put back the moved pieces where they were
+				p.moveTo(from);
+				if (target != null){
+					target.moveTo(dest);
+				}
 				return false;
 			}
 		}
-
-
-		if (target != null)
+		// Check if opponent King is checked or not. This might not be needed
+		Coordinates<Integer> enemyKingCord = kings[whiteTurn ? 1 : 0].getCoordinates();
+		for (Piece oppenentPiece : (whiteTurn ?  pieces.get(WHITE) : pieces.get(BLACK))) {
+			if (oppenentPiece.canCaptureAt(enemyKingCord)){
+				System.out.println("CHECK !");
+				// do eventual check related things ...
+			}
+		}
+		if (target != null) {
 			pieces.get(target.getColor().ordinal()).remove(target);
-
-		p.moveTo(dest);
-
+		}
 		return true;
 	}
 
@@ -93,9 +99,9 @@ public class Board {
 
 	/**
 	 * Verifies that path between a coordinate to another is obstructed
-	 * @param from
-	 * @param dest
-	 * @return
+	 * @param from initial coordinates
+	 * @param dest destination coordinates
+	 * @return boolean that shows is the path is obstructed
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
