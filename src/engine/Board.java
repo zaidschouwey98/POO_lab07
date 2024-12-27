@@ -12,8 +12,7 @@ import java.util.List;
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
-	private Piece kings[] = new Piece[2];
-	private static boolean inCheck = false;
+	private final King[] kings = new King[2];
 
 	private final List<List<Piece>> pieces = List.of(
 			new LinkedList<>(), // white pieces
@@ -25,8 +24,8 @@ public class Board {
 
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
-		if(piece instanceof King)
-			kings[piece.getColor().ordinal()] = piece;
+		if (piece instanceof King)
+			kings[piece.getColor().ordinal()] = (King) piece;
 	}
 
 	/**
@@ -102,7 +101,8 @@ public class Board {
 	 * @param from initial coordinates
 	 * @param dest destination coordinates
 	 * @return boolean that shows is the path is obstructed
-	 * @throws ArrayIndexOutOfBoundsException
+	 *
+	 * @throws ArrayIndexOutOfBoundsException when the given position is out of the board
 	 */
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
 		int dx = (int) Math.signum(dest.x() - from.x());
