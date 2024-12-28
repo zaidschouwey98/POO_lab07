@@ -115,8 +115,6 @@ public class ConsoleView extends BaseView<String> {
     }
   }
 
-
-
   private void printBoard() {
     for (int y = 7; y >= 0; --y) {
       System.out.print(y + 1 + " |");

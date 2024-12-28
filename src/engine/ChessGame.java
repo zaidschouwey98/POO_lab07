@@ -6,7 +6,6 @@ import chess.PlayerColor;
 import engine.piece.*;
 
 public class ChessGame implements ChessController {
-
 	private ChessView view;
 	private PlayerColor colorPlaying = PlayerColor.WHITE;
 	private Board board;
@@ -33,6 +32,17 @@ public class ChessGame implements ChessController {
 		boolean moveWasValid = board.move(from, to, colorPlaying);
 		if (moveWasValid) {
 			colorPlaying = colorPlaying.toggle();
+			if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
+				PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
+					new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+					new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+					new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+					new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
+				);
+
+				board.removePiece(movingPiece);
+				board.addPiece(choice.piece);
+			}
 		}
 		updateView(board);
 
@@ -87,4 +97,12 @@ public class ChessGame implements ChessController {
 		if (board.isChecked()) view.displayMessage("Check !");
 		else view.displayMessage("");
 	}
+
+	record PieceUserChoice(Piece piece) implements ChessView.UserChoice {
+
+		@Override
+			public String textValue() {
+				return piece.getClass().getSimpleName();
+			}
+		}
 }
