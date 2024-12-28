@@ -12,7 +12,7 @@ public class DirectionMovementRestriction implements Movement {
 	}
 
 	@Override
-	public boolean canMove(Coordinates<Integer> from, Coordinates<Integer> to) {
+	public boolean canMove(Coordinates from, Coordinates to) {
 		return switch (color) {
 			case WHITE -> from.y() < to.y();
 			case BLACK -> from.y() > to.y();

@@ -59,7 +59,7 @@ public class Board {
 	 * @param colorPlaying boolean representing if white is to play
 	 * @return boolean representing whether the piece was moved or not
 	 */
-	public boolean move(Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
+	public boolean move(Coordinates from, Coordinates to, PlayerColor colorPlaying) {
 		Piece p = getPieceAt(from);
 		Piece target = getPieceAt(to);
 
@@ -83,7 +83,7 @@ public class Board {
 			return true;
 		} else {
       if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
-			Coordinates<Integer> enPassantCapturePos = new Coordinates<>(to.x(), from.y());
+			Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
 			Piece enPassantTarget = getPieceAt(enPassantCapturePos);
 			if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
 				removePiece(enPassantTarget);
@@ -92,11 +92,11 @@ public class Board {
       
 			// Normal move
 			if (target != null)
-				target.moveTo(new Coordinates<>(-1, -1));
+				target.moveTo(new Coordinates(-1, -1));
 			p.moveTo(to);
 
 			// Control if any opponent piece can capture the king
-			Coordinates<Integer> playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
+			Coordinates playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
 			if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
 				// Cancel move
 				if (target != null)
@@ -115,7 +115,7 @@ public class Board {
 		}
 
 		// Control if opponent King is checked or not
-		Coordinates<Integer> opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
+		Coordinates opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
 		check = verifyCheck(colorPlaying, opponentKingCoordinates);
 
 		if (p instanceof Pawn) {
@@ -132,7 +132,7 @@ public class Board {
 	 * @return boolean that shows is the path is obstructed
 	 * @throws ArrayIndexOutOfBoundsException when the given position is out of the board
 	 */
-	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) {
+	private boolean isPathObstructed(Coordinates from, Coordinates dest) {
 		if (from == null || dest == null) throw new NullPointerException();
 		if (from.equals(dest)) return false;
 
@@ -140,14 +140,14 @@ public class Board {
 		int dy = (int) Math.signum(dest.y() - from.y());
 
 		// * infinite loop here
-		for (Coordinates<Integer> it = from.move(dx, dy); isInBoundaries(it) && !it.equals(dest); it = it.move(dx, dy)) {
+		for (Coordinates it = from.move(dx, dy); isInBoundaries(it) && !it.equals(dest); it = it.move(dx, dy)) {
 			if (getPieceAt(it) != null) return true;
 		}
 
 		return false;
 	}
 
-	public Piece getPieceAt(Coordinates<Integer> pos) {
+	public Piece getPieceAt(Coordinates pos) {
 		if (pos == null) throw new NullPointerException("Coordinates cannot be null");
 		if (!isInBoundaries(pos))
 			throw new IllegalArgumentException(String.format("Invalid coordinates %s.", pos));
@@ -167,7 +167,7 @@ public class Board {
 		return check;
 	}
 
-	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
+	private boolean verifyCheck(PlayerColor opponentColor, Coordinates position) {
 		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
 			boolean isOnPath = oppenentPiece.canCaptureAt(position);
 			boolean isReachable = oppenentPiece instanceof Knight || !isPathObstructed(oppenentPiece.getCoordinates(), position);
@@ -178,11 +178,11 @@ public class Board {
 		return false;
 	}
 
-	private boolean isInBoundaries(Coordinates<Integer> position) {
+	private boolean isInBoundaries(Coordinates position) {
 		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
 	}
 
-	private boolean isMovementValid(Piece p, Piece target, Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
+	private boolean isMovementValid(Piece p, Piece target, Coordinates from, Coordinates to, PlayerColor colorPlaying) {
 		// General invalid movement cases
 		if (p == null || !p.getColor().equals(colorPlaying) || !(p instanceof Knight) && isPathObstructed(from, to)) {
 			return false;
@@ -191,7 +191,7 @@ public class Board {
 		if (target == null) {
 			if (p instanceof Pawn && from.x() != to.x()) {
 				// Tries to enpassant
-				Coordinates<Integer> enPassantCapturePos = new Coordinates<>(to.x(), from.y());
+				Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
 				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
 				return enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant();
 			}

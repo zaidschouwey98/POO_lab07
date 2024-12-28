@@ -7,7 +7,7 @@ import engine.movements.KnightMovement;
 import engine.movements.Movement;
 
 public class Knight extends Piece{
-	public Knight(PlayerColor color, Coordinates<Integer> coordinates){
+	public Knight(PlayerColor color, Coordinates coordinates){
 		super(color,coordinates,
 			new Movement[] {
 				new KnightMovement()

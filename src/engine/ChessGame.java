@@ -22,8 +22,8 @@ public class ChessGame implements ChessController {
 
 	@Override
 	public boolean move(int fromX, int fromY, int toX, int toY) {
-		Coordinates<Integer> from = new Coordinates<>(fromX, fromY);
-		Coordinates<Integer> to = new Coordinates<>(toX, toY);
+		Coordinates from = new Coordinates(fromX, fromY);
+		Coordinates to = new Coordinates(toX, toY);
 
 		Piece movingPiece = board.getPieceAt(from);
 		if (!board.move(from, to, colorPlaying)) return false;
@@ -32,10 +32,10 @@ public class ChessGame implements ChessController {
 		// Pawn promotion
 		if (movingPiece instanceof Pawn && (to.y() == 0 || to.y() == 7)) {
 			PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
-				new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-				new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-				new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-				new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
+				new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates(toX, toY))),
+				new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates(toX, toY))),
+				new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates(toX, toY))),
+				new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates(toX, toY)))
 			);
 
 			board.removePiece(movingPiece);
@@ -62,17 +62,17 @@ public class ChessGame implements ChessController {
 				pawnStartRow = 6;
 			}
 
-			board.addPiece(new Rook(color, new Coordinates<>(0, pieceStartRow)));
-			board.addPiece(new Rook(color, new Coordinates<>(7, pieceStartRow)));
-			board.addPiece(new Knight(color, new Coordinates<>(6, pieceStartRow)));
-			board.addPiece(new Knight(color, new Coordinates<>(1, pieceStartRow)));
-			board.addPiece(new Bishop(color, new Coordinates<>(2, pieceStartRow)));
-			board.addPiece(new Bishop(color, new Coordinates<>(5, pieceStartRow)));
-			board.addPiece(new Queen(color, new Coordinates<>(3, pieceStartRow)));
-			board.addPiece(new King(color, new Coordinates<>(4, pieceStartRow)));
+			board.addPiece(new Rook(color, new Coordinates(0, pieceStartRow)));
+			board.addPiece(new Rook(color, new Coordinates(7, pieceStartRow)));
+			board.addPiece(new Knight(color, new Coordinates(6, pieceStartRow)));
+			board.addPiece(new Knight(color, new Coordinates(1, pieceStartRow)));
+			board.addPiece(new Bishop(color, new Coordinates(2, pieceStartRow)));
+			board.addPiece(new Bishop(color, new Coordinates(5, pieceStartRow)));
+			board.addPiece(new Queen(color, new Coordinates(3, pieceStartRow)));
+			board.addPiece(new King(color, new Coordinates(4, pieceStartRow)));
 
 			for (int i = 0; i < 8; ++i) {
-				board.addPiece(new Pawn(color, new Coordinates<>(i, pawnStartRow)));
+				board.addPiece(new Pawn(color, new Coordinates(i, pawnStartRow)));
 			}
 		}
 
@@ -82,7 +82,7 @@ public class ChessGame implements ChessController {
 	private void updateView(Board board) {
 		for (int i = 0; i < 8; ++i) {
 			for (int j = 0; j < 8; ++j) {
-				Piece p = board.getPieceAt(new Coordinates<>(i, j));
+				Piece p = board.getPieceAt(new Coordinates(i, j));
 				if (p == null) {
 					this.view.removePiece(i, j);
 				} else {

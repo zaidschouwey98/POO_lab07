@@ -4,7 +4,7 @@ import engine.Coordinates;
 
 public class KnightMovement implements Movement {
 	@Override
-	public boolean canMove(Coordinates<Integer> from, Coordinates<Integer> to) {
+	public boolean canMove(Coordinates from, Coordinates to) {
 		int xDiff = Math.abs(from.x() - to.x());
 		int yDiff = Math.abs(from.y() - to.y());
 

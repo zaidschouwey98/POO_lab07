@@ -7,12 +7,12 @@ import engine.movements.Movement;
 
 public abstract class Piece {
 	private final PlayerColor color;
-	protected Coordinates<Integer> coordinates;
+	protected Coordinates coordinates;
 	private final Movement[] pieceMovements;
 
 	private final Movement[] pieceMovementRestrictions;
 
-	protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
+	protected Piece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
 		this.color = color;
 		this.coordinates = coordinates;
 
@@ -22,7 +22,7 @@ public abstract class Piece {
 
 	public abstract PieceType getGraphicalType();
 
-	public boolean canMoveTo(Coordinates<Integer> destination) {
+	public boolean canMoveTo(Coordinates destination) {
 		if (isExceptionalMoveAllowed(destination)) return true;
 		for (Movement restriction : pieceMovementRestrictions)
             if (!restriction.canMove(this.coordinates, destination)) {
@@ -36,7 +36,7 @@ public abstract class Piece {
 		return false;
 	}
 
-	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+	public boolean isExceptionalMoveAllowed(Coordinates dest) {
 		return false;
 	}
 
@@ -46,7 +46,7 @@ public abstract class Piece {
 	 * @param destination the target of the capture
 	 * @return boolean that represents if the piece can capture at dest
 	 */
-	public boolean canCaptureAt(Coordinates<Integer> destination) {
+	public boolean canCaptureAt(Coordinates destination) {
 		return canMoveTo(destination);
 	}
 
@@ -54,7 +54,7 @@ public abstract class Piece {
 	 * Definitely moves to piece to a destination
 	 * @param destination the destination
 	 */
-	public void moveTo(Coordinates<Integer> destination) {
+	public void moveTo(Coordinates destination) {
 		this.coordinates = destination;
 	}
 
@@ -66,7 +66,7 @@ public abstract class Piece {
 		return color;
 	}
 
-	public Coordinates<Integer> getCoordinates() {
+	public Coordinates getCoordinates() {
 		return coordinates;
 	}
 }

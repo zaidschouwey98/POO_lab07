@@ -1,12 +1,11 @@
 package engine;
 
-public record Coordinates<T extends Number>(T x, T y) {
-	// TODO: remove generic
-	public Coordinates<Integer> move(T dx, T dy) {
-		int rx = this.x().intValue() + dx.intValue();
-		int ry = this.y().intValue() + dy.intValue();
+public record Coordinates(int x, int y) {
+	public Coordinates move(int dx, int dy) {
+		int rx = this.x() + dx;
+		int ry = this.y() + dy;
 
-		return new Coordinates<>(rx, ry);
+		return new Coordinates(rx, ry);
 	}
 
 	@Override

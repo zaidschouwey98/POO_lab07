@@ -11,7 +11,7 @@ public class Pawn extends FirstMovePiece {
 	private final Movement[] captureRestrictions;
 	private boolean capturableByEnpassant = false;
 
-	public Pawn (PlayerColor color, Coordinates<Integer> coordinates) {
+	public Pawn (PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
 			new Movement[] {
 				new AxialMovement()
@@ -37,7 +37,7 @@ public class Pawn extends FirstMovePiece {
 	}
 
 	@Override
-	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+	public boolean isExceptionalMoveAllowed(Coordinates dest) {
 		int jumpDistance = LONG_JUMP_DIST;
 		if (getColor() == PlayerColor.BLACK) jumpDistance *= -1;
 
@@ -45,7 +45,7 @@ public class Pawn extends FirstMovePiece {
 	}
 
 	@Override
-	public boolean canCaptureAt(Coordinates<Integer> at) {
+	public boolean canCaptureAt(Coordinates at) {
 		for (var movement : captureRestrictions) {
 			if (!movement.canMove(getCoordinates(), at)) return false;
 		}

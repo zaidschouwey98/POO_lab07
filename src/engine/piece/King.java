@@ -8,7 +8,7 @@ import engine.movements.*;
 public class King extends FirstMovePiece {
 	private static final int CASTLE_DIST = 2;
 
-	public King (PlayerColor color, Coordinates<Integer> coordinates){
+	public King (PlayerColor color, Coordinates coordinates){
 		super(color, coordinates,
 			new Movement[] {
 				new AxialMovement(),
@@ -26,7 +26,7 @@ public class King extends FirstMovePiece {
     }
 
 	@Override
-	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+	public boolean isExceptionalMoveAllowed(Coordinates dest) {
 		if (hasMoved()) return false;
 
 		boolean isLeftRook = dest.equals(getCoordinates().move(-CASTLE_DIST, 0));

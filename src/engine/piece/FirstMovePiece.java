@@ -7,12 +7,12 @@ import engine.movements.Movement;
 public abstract class FirstMovePiece extends Piece {
 	private boolean hasMoved = false;
 
-	protected FirstMovePiece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
+	protected FirstMovePiece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
 		super(color, coordinates, pieceMovements, pieceMovementRestrictions);
 	}
 
 	@Override
-	public void moveTo(Coordinates<Integer> destination) {
+	public void moveTo(Coordinates destination) {
 		super.moveTo(destination);
 
 		hasMoved = true;

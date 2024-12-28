@@ -7,7 +7,7 @@ import engine.movements.AxialMovement;
 import engine.movements.Movement;
 
 public class Rook extends FirstMovePiece {
-	public Rook (PlayerColor color, Coordinates<Integer> coordinates){
+	public Rook (PlayerColor color, Coordinates coordinates){
 		super(color, coordinates,
 			new Movement[] {
 				new AxialMovement()
