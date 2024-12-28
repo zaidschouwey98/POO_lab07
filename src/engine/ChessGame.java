@@ -74,7 +74,7 @@ public class ChessGame implements ChessController {
 			board.addPiece(new Queen(color, new Coordinates<>(3, pieceStartRow)));
 			board.addPiece(new King(color, new Coordinates<>(4, pieceStartRow)));
 
-			for (int i = 0 ; i < 8 ; ++i) {
+			for (int i = 0; i < 8; ++i) {
 				board.addPiece(new Pawn(color, new Coordinates<>(i, pawnStartRow)));
 			}
 		}
@@ -101,8 +101,8 @@ public class ChessGame implements ChessController {
 	record PieceUserChoice(Piece piece) implements ChessView.UserChoice {
 
 		@Override
-			public String textValue() {
-				return piece.getClass().getSimpleName();
-			}
+		public String textValue() {
+			return piece.getClass().getSimpleName();
 		}
+	}
 }
