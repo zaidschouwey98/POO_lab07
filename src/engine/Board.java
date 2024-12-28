@@ -1,6 +1,5 @@
 package engine;
 
-import chess.ChessView;
 import chess.PlayerColor;
 import engine.piece.King;
 import engine.piece.Knight;
@@ -80,20 +79,6 @@ public class Board {
 		}
 		return true;
 	}
-
-	public void updateView(ChessView view) {
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Piece p = getPieceAt(new Coordinates<>(i, j));
-				if (p == null) {
-					view.removePiece(i, j);
-				} else {
-					view.putPiece(p.getGraphicalType(), p.getColor(), i, j);
-				}
-			}
-		}
-	}
-
 
 	/**
 	 * Verifies that path between a coordinate to another is obstructed

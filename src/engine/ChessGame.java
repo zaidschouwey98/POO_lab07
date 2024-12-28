@@ -18,7 +18,7 @@ public class ChessGame implements ChessController {
 		this.view = view;
 		view.startView();
 
-		board.updateView(view);
+		updateView(board);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class ChessGame implements ChessController {
 		if (moveWasValid) {
 			colorPlaying = colorPlaying.toggle();
 		}
-		board.updateView(view);
+		updateView(board);
 
 		return moveWasValid;
 	}
@@ -69,7 +69,19 @@ public class ChessGame implements ChessController {
 		}
 
 		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
-		// TODO déplacer updateView dans ChessGame
-		board.updateView(view);
+		updateView(board);
+	}
+
+	private void updateView(Board board) {
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
+				Piece p = board.getPieceAt(new Coordinates<>(i, j));
+				if (p == null) {
+					this.view.removePiece(i, j);
+				} else {
+					this.view.putPiece(p.getGraphicalType(), p.getColor(), i, j);
+				}
+			}
+		}
 	}
 }
