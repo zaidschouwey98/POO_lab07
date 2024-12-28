@@ -8,13 +8,13 @@ import engine.movements.DiagonalMovement;
 import engine.movements.Movement;
 
 public class Queen extends Piece {
-	public Queen (PlayerColor color, Coordinates coordinates){
+	public Queen(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
-			new Movement[] {
+			new Movement[]{
 				new AxialMovement(),
 				new DiagonalMovement()
 			},
-			new Movement[] { }
+			new Movement[]{}
 		);
 	}
 

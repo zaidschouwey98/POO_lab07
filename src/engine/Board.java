@@ -82,14 +82,14 @@ public class Board {
 
 			return true;
 		} else {
-      if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
-			Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
-			Piece enPassantTarget = getPieceAt(enPassantCapturePos);
-			if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
-				removePiece(enPassantTarget);
+			if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
+				Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
+				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
+				if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
+					removePiece(enPassantTarget);
+				}
 			}
-		}
-      
+
 			// Normal move
 			if (target != null)
 				target.moveTo(new Coordinates(-1, -1));

@@ -7,10 +7,10 @@ import engine.movements.DiagonalMovement;
 import engine.movements.Movement;
 
 public class Bishop extends Piece {
-	public Bishop (PlayerColor color, Coordinates coordinates){
+	public Bishop(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
-			new Movement[] { new DiagonalMovement() },
-			new Movement[] { }
+			new Movement[]{new DiagonalMovement()},
+			new Movement[]{}
 		);
 	}
 

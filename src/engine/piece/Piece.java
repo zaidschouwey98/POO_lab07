@@ -25,11 +25,11 @@ public abstract class Piece {
 	public boolean canMoveTo(Coordinates destination) {
 		if (isExceptionalMoveAllowed(destination)) return true;
 		for (Movement restriction : pieceMovementRestrictions)
-            if (!restriction.canMove(this.coordinates, destination)) {
+			if (!restriction.canMove(this.coordinates, destination)) {
 				return false;
 			}
-        for (Movement movement : pieceMovements)
-            if (movement.canMove(this.coordinates, destination)) {
+		for (Movement movement : pieceMovements)
+			if (movement.canMove(this.coordinates, destination)) {
 				return true;
 			}
 
@@ -43,6 +43,7 @@ public abstract class Piece {
 	/**
 	 * Check if the piece could capture at the destination REGARDLESS OF THE FACT THAT THE PATH
 	 * IS CLEAR OR NOT
+	 *
 	 * @param destination the target of the capture
 	 * @return boolean that represents if the piece can capture at dest
 	 */
@@ -52,6 +53,7 @@ public abstract class Piece {
 
 	/**
 	 * Definitely moves to piece to a destination
+	 *
 	 * @param destination the destination
 	 */
 	public void moveTo(Coordinates destination) {
@@ -60,6 +62,7 @@ public abstract class Piece {
 
 	/**
 	 * Gets the color of the piece
+	 *
 	 * @return the color of the piece
 	 */
 	public PlayerColor getColor() {

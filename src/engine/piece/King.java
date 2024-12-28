@@ -8,13 +8,13 @@ import engine.movements.*;
 public class King extends FirstMovePiece {
 	private static final int CASTLE_DIST = 2;
 
-	public King (PlayerColor color, Coordinates coordinates){
+	public King(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
-			new Movement[] {
+			new Movement[]{
 				new AxialMovement(),
 				new DiagonalMovement()
 			},
-			new Movement[] {
+			new Movement[]{
 				new RadiusMovementRestriction(1)
 			}
 		);
@@ -22,8 +22,8 @@ public class King extends FirstMovePiece {
 
 	@Override
 	public PieceType getGraphicalType() {
-        return PieceType.KING;
-    }
+		return PieceType.KING;
+	}
 
 	@Override
 	public boolean isExceptionalMoveAllowed(Coordinates dest) {

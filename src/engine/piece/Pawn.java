@@ -11,20 +11,20 @@ public class Pawn extends FirstMovePiece {
 	private final Movement[] captureRestrictions;
 	private boolean capturableByEnpassant = false;
 
-	public Pawn (PlayerColor color, Coordinates coordinates) {
+	public Pawn(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
-			new Movement[] {
+			new Movement[]{
 				new AxialMovement()
 			},
-			new Movement[] {
+			new Movement[]{
 				new DirectionMovementRestriction(color),
 				new RadiusMovementRestriction(1)  // Radius changed to 1 after first move
 			}
 		);
-		captureRestrictions = new Movement[] {
-				new DirectionMovementRestriction(color),
-				new RadiusMovementRestriction(1),
-				new DiagonalMovement()
+		captureRestrictions = new Movement[]{
+			new DirectionMovementRestriction(color),
+			new RadiusMovementRestriction(1),
+			new DiagonalMovement()
 		};
 	}
 
