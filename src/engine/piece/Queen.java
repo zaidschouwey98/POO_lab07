@@ -18,6 +18,7 @@ public class Queen extends Piece {
 			new MovementRestriction[] { }
 		);
 	}
+
 	@Override
 	public PieceType getGraphicalType() {
 		return PieceType.QUEEN;

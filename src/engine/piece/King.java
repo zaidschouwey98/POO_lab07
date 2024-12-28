@@ -22,9 +22,7 @@ public class King extends Piece {
 	}
 
 	@Override
-	public void moveTo(Coordinates<Integer> coordinates) {
-		super.moveTo(coordinates);
-
+	public void performMoveActions() {
 		canCastle = false;
 	}
 

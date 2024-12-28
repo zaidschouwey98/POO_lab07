@@ -6,8 +6,11 @@ import engine.Coordinates;
 import engine.movements.*;
 
 public class Pawn extends Piece {
+
+	private static final int LONG_JUMP_DIST = 2;
 	private final Movement[] captureRestrictions;
-	private boolean hasMoved;
+	private boolean canLongJump = true;
+
 	public Pawn (PlayerColor color, Coordinates<Integer> coordinates) {
 		super(color, coordinates,
 			new Movement[] {
@@ -15,7 +18,7 @@ public class Pawn extends Piece {
 			},
 			new MovementRestriction[] {
 				new DirectionMovementRestriction(color),
-				new RadiusMovementRestriction(2)  // Radius changed to 1 after first move
+				new RadiusMovementRestriction(1)  // Radius changed to 1 after first move
 			}
 		);
 		captureRestrictions = new Movement[] {
@@ -23,35 +26,19 @@ public class Pawn extends Piece {
 				new RadiusMovementRestriction(1),
 				new DiagonalMovement()
 		};
-		hasMoved = false;
-	}
-	public boolean hasMoved () {
-		return hasMoved;
 	}
 
-	/**
-	 * Setter to set the hasMoved variable
-	 * @param hasMoved the value to set
-	 */
-	private void setHasMoved (boolean hasMoved) {
-		this.hasMoved = hasMoved;
+	@Override
+	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+		int jumpDistance = LONG_JUMP_DIST;
+		if (getColor() == PlayerColor.BLACK) jumpDistance *= -1;
+
+		return canLongJump && dest.equals(getCoordinates().move(0, jumpDistance));
 	}
 
-	public void moveTo(Coordinates<Integer> destination) {
-		if (!hasMoved()) {
-			setHasMoved(false);
-
-			// removing the RadiusMovement restriction and assigning a new one
-			// assuming there is only one RadiusMovementRestriction assigned to the pawn
-			for (int i = 0 ; i < this.pieceMovementRestrictions.size() ; ++i){
-				if (this.pieceMovementRestrictions.get(i) instanceof RadiusMovementRestriction) {
-					this.pieceMovementRestrictions.remove(i);
-					break;
-				}
-			}
-			this.pieceMovementRestrictions.add(new RadiusMovementRestriction(1));
-		}
-		super.moveTo(destination);
+	@Override
+	public void performMoveActions() {
+		canLongJump = false;
 	}
 
 	@Override
