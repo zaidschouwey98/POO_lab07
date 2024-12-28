@@ -65,7 +65,7 @@ public class ChessGame implements ChessController {
 							newPiece = new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY));
 							break;
 						case PieceType.ROOK:
-							// remove castling rights to this piece
+							// TODO remove castling rights to this piece
 							newPiece = new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY));
 							break;
 						case PieceType.QUEEN:
@@ -83,7 +83,6 @@ public class ChessGame implements ChessController {
 		board.updateView(view);
 
 		// this print is for dev purposes only
-		System.out.println(whiteTurn ? "White to play" : "Black to play");
 
 		return moveWasDone;
 	}

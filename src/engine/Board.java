@@ -76,7 +76,6 @@ public class Board {
 		Coordinates<Integer> enemyKingCord = kings[whiteTurn ? 1 : 0].getCoordinates();
 		for (Piece oppenentPiece : (whiteTurn ?  pieces.get(WHITE) : pieces.get(BLACK))) {
 			if (oppenentPiece.canCaptureAt(enemyKingCord)){
-				System.out.println("CHECK !");
 				// do eventual check related things ...
 			}
 		}
