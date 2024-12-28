@@ -30,7 +30,7 @@ public class ChessGame implements ChessController {
 		colorPlaying = colorPlaying.toggle();
 
 		// Pawn promotion
-		if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
+		if (movingPiece instanceof Pawn && (to.y() == 0 || to.y() == 7)) {
 			PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
 				new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
 				new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
@@ -39,7 +39,7 @@ public class ChessGame implements ChessController {
 			);
 
 			board.removePiece(movingPiece);
-			board.addPiece(choice.piece);
+			board.addPiece(choice.piece());
 		}
 		updateView(board);
 

@@ -8,4 +8,9 @@ public record Coordinates<T extends Number>(T x, T y) {
 
 		return new Coordinates<>(rx, ry);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("(%s, %s)", x(), y());
+	}
 }
