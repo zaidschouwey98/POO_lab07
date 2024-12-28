@@ -26,12 +26,11 @@ public class ChessGame implements ChessController {
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
 
 		Piece movingPiece = board.getPieceAt(from);
-		if (movingPiece == null || !movingPiece.getColor().equals(colorPlaying)) {
-			return false;
-		}
 		boolean moveWasValid = board.move(from, to, colorPlaying);
 		if (moveWasValid) {
 			colorPlaying = colorPlaying.toggle();
+
+			// Pawn promotion
 			if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
 				PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
 					new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
