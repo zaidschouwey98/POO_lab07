@@ -41,6 +41,7 @@ public class ChessGame implements ChessController {
 
 	@Override
 	public void newGame() {
+		board = new Board();
 		colorPlaying = PlayerColor.WHITE;
 
 		int pieceStartRow;
@@ -68,7 +69,6 @@ public class ChessGame implements ChessController {
 			}
 		}
 
-		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
 		updateView(board);
 	}
 
