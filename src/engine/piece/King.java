@@ -25,13 +25,13 @@ public class King extends FirstMovePiece {
         return PieceType.KING;
     }
 
-	public void castle(Rook rook) {
-		if (hasMoved()) return;
+	@Override
+	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+		if (hasMoved()) return false;
 
-		int direction = (rook.getCoordinates().x() < this.getCoordinates().x() ? -1 : 1);
-		int movement = direction * CASTLE_DIST;
+		boolean isLeftRook = dest.equals(getCoordinates().move(-CASTLE_DIST, 0));
+		boolean isRightRook = dest.equals(getCoordinates().move(CASTLE_DIST, 0));
 
-		moveTo(this.coordinates.move(movement, 0));
-		rook.moveTo(this.coordinates.move(-direction, 0));
+		return isLeftRook || isRightRook;
 	}
 }
