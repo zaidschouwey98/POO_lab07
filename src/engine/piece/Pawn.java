@@ -10,6 +10,7 @@ public class Pawn extends Piece {
 	private static final int LONG_JUMP_DIST = 2;
 	private final Movement[] captureRestrictions;
 	private boolean canLongJump = true;
+	private boolean capturableByEnpassant = false;
 
 	public Pawn (PlayerColor color, Coordinates<Integer> coordinates) {
 		super(color, coordinates,
@@ -26,6 +27,14 @@ public class Pawn extends Piece {
 				new RadiusMovementRestriction(1),
 				new DiagonalMovement()
 		};
+	}
+
+	public boolean isCapturableByEnpassant() {
+		return this.capturableByEnpassant;
+	}
+
+	public void setCapturableByEnpassant(boolean capturableByEnpassant) {
+		this.capturableByEnpassant = capturableByEnpassant;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package engine;
 import chess.PlayerColor;
 import engine.piece.King;
 import engine.piece.Knight;
+import engine.piece.Pawn;
 import engine.piece.Piece;
 
 import java.util.LinkedList;
@@ -42,11 +43,24 @@ public class Board {
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
 		Piece p = getPieceAt(from);
 		Piece target = getPieceAt(to);
+		boolean triesToEnpassant = false;
 
 		if (p == null) return false;
+
+		if (p instanceof Pawn && target == null && from.x() != to.x()) {
+			Coordinates<Integer> capturePos = new Coordinates<>(to.x(), from.y());
+			Piece enPassantTarget = getPieceAt(capturePos);
+			if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
+				removePiece(enPassantTarget);
+				triesToEnpassant = true;
+			} else {
+				return false;
+			}
+		}
+
 		if (!(p instanceof Knight) && isPathObstructed(from, to)) return false;
 		if (target == null) {
-			if (!p.canMoveTo(to)) return false;
+			if (!p.canMoveTo(to) && !triesToEnpassant) return false;
 		} else {
 			if (target.getColor() == p.getColor()) return false;
 			else if (!p.canCaptureAt(target.getCoordinates())) return false;
@@ -74,6 +88,9 @@ public class Board {
 			pieces.get(target.getColor().ordinal()).remove(target);
 		}
 
+		if (p instanceof Pawn) {
+			((Pawn) p).setCapturableByEnpassant(Math.abs(from.y() - to.y()) == 2);
+		}
 		return true;
 	}
 
