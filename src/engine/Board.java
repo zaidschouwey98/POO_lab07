@@ -11,6 +11,7 @@ import java.util.List;
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
+
 	private final King[] kings = new King[2];
 	private boolean check = false;
 
@@ -18,9 +19,6 @@ public class Board {
 			new LinkedList<>(), // white pieces
 			new LinkedList<>()	// black pieces
 	);
-
-
-
 
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
@@ -31,50 +29,41 @@ public class Board {
 	/**
 	 * Tries to move a piece from "from" to "dest"
 	 * @param from start coordinates
-	 * @param dest destination coordinates
+	 * @param to destination coordinates
 	 * @param colorPlaying boolean representing if white is to play
 	 * @return boolean representing whether the piece was moved or not
 	 */
-	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest, PlayerColor colorPlaying) {
+	public boolean move(Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
 		Piece p = getPieceAt(from);
-		Piece target = getPieceAt(dest);
+		Piece target = getPieceAt(to);
 
 		if (p == null) return false;
-		if (!(p instanceof Knight) && isPathObstructed(from, dest)) return false;
+		if (!(p instanceof Knight) && isPathObstructed(from, to)) return false;
 		if (target == null) {
-			if (!p.canMoveTo(dest)) return false;
+			if (!p.canMoveTo(to)) return false;
 		} else {
 			if (target.getColor() == p.getColor()) return false;
 			else if (!p.canCaptureAt(target.getCoordinates())) return false;
 		}
-		// check that our King would not be checked after the move
 
 		if (target != null)
 			target.moveTo(new Coordinates<>(-1, -1));
-		p.moveTo(dest);
+		p.moveTo(to);
 
 		// Control if any opponent piece can capture the king
 		Coordinates<Integer> playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
-		for (Piece oppenentPiece : pieces.get(colorPlaying.toggle().ordinal())) {
-			boolean opponentCanCapture = oppenentPiece.canCaptureAt(playingKingCoordinates);
-			if (opponentCanCapture && !isPathObstructed(oppenentPiece.getCoordinates(), playingKingCoordinates)) {
-				// Cancel the move
-				if (target != null)
-					target.moveTo(dest);
-				p.moveTo(from);
+		if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
+			if (target != null)
+				target.moveTo(to);
+			p.moveTo(from);
 
-				return false;
-			}
+			return false;
 		}
 		check = false;
 
 		// Control if opponent King is checked or not
 		Coordinates<Integer> opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
-		for (Piece oppenentPiece : pieces.get(colorPlaying.ordinal())) {
-			if (oppenentPiece.canCaptureAt(opponentKingCoordinates)){
-				check = true;
-			}
-		}
+		check = verifyCheck(colorPlaying, opponentKingCoordinates);
 		if (target != null) {
 			pieces.get(target.getColor().ordinal()).remove(target);
 		}
@@ -120,5 +109,15 @@ public class Board {
 
 	public boolean isChecked() {
 		return check;
+	}
+
+	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
+		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
+			if (oppenentPiece.canCaptureAt(position)){
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

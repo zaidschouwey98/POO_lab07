@@ -23,11 +23,11 @@ public class King extends Piece {
 
 	@Override
 	public void performMoveActions() {
-		canCastle = false;
+		removeCastlePrivilege();
 	}
 
-    @Override
-    public PieceType getGraphicalType() {
+	@Override
+	public PieceType getGraphicalType() {
         return PieceType.KING;
     }
 
@@ -39,5 +39,9 @@ public class King extends Piece {
 
 		moveTo(this.coordinates.move(movement, 0));
 		rook.moveTo(this.coordinates.move(-direction, 0));
+	}
+
+	public void removeCastlePrivilege() {
+		canCastle = false;
 	}
 }
