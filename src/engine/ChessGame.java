@@ -2,10 +2,25 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.piece.*;
 
 public class ChessGame implements ChessController {
+	static class PieceMemory implements ChessView.UserChoice{
+		private final PieceType p;
+		PieceMemory(PieceType piece){
+			this.p = piece;
+		}
+
+		public PieceType getPieceType() {
+			return p;
+		}
+		@Override
+		public String textValue() {
+			return p.toString();
+		}
+	}
 
 	private ChessView view;
 	private boolean whiteTurn = true;
@@ -32,12 +47,42 @@ public class ChessGame implements ChessController {
 		}
 		boolean moveWasDone = board.move(from, to, whiteTurn);
 		if (moveWasDone) {
+			// vérifier que la destination était la première ou la dernière rangée
+			if (toY == 0 || toY == 7){
+				if (movingPiece instanceof Pawn) {
+					PieceMemory choice = view.askUser("Promotion", "Promotion choice",
+                            new PieceMemory(PieceType.KNIGHT),
+                            new PieceMemory(PieceType.BISHOP),
+                            new PieceMemory(PieceType.ROOK),
+                            new PieceMemory(PieceType.QUEEN)
+							);
+					Piece newPiece;
+					switch(choice.getPieceType()){
+						case PieceType.KNIGHT:
+							newPiece = new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.BISHOP:
+							newPiece = new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.ROOK:
+							// TODO remove castling rights to this piece
+							newPiece = new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.QUEEN:
+							newPiece = new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						default:
+							newPiece = null;
+					}
+					board.removePiece(movingPiece);
+					board.addPiece(newPiece);
+				}
+			}
 			whiteTurn = !whiteTurn;
 		}
 		board.updateView(view);
 
 		// this print is for dev purposes only
-		System.out.println(whiteTurn ? "White to play" : "Black to play");
 
 		return moveWasDone;
 	}
@@ -80,5 +125,19 @@ public class ChessGame implements ChessController {
 	 */
 	private boolean pieceNotInPlayingTeam(Piece piece) {
 		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
+	}
+
+	private ChessView.UserChoice pieceTypeToUserChoice(PieceType piece) {
+		return new ChessView.UserChoice() {
+			private final PieceType p = piece;
+
+			public PieceType getPieceType() {
+				return p;
+			}
+			@Override
+			public String textValue() {
+				return p.toString();
+			}
+		};
 	}
 }
