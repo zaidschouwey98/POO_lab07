@@ -1,10 +1,10 @@
 package engine;
 
-import chess.ChessView;
 import chess.PlayerColor;
 import engine.piece.King;
 import engine.piece.Knight;
 import engine.piece.Piece;
+import engine.piece.Rook;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,116 +12,132 @@ import java.util.List;
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
-	private Piece kings[] = new Piece[2];
-	private static boolean inCheck = false;
+	private static final int DEFAULT_WIDTH = 8;
+	private static final int DEFAULT_HEIGHT = 8;
+	private static final int CASTLE_DIST = 2;
+
+	private final int width;
+	private final int height;
+
+	private final King[] kings = new King[2];
+	private final Rook[][] rooks = new Rook[2][2];
+	private boolean check = false;
 
 	private final List<List<Piece>> pieces = List.of(
-			new LinkedList<>(), // white pieces
-			new LinkedList<>()	// black pieces
+		new LinkedList<>(), // white pieces
+		new LinkedList<>()    // black pieces
 	);
+
+	public Board(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	public Board() {
+		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
 
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
-		if(piece instanceof King)
-			kings[piece.getColor().ordinal()] = piece;
+		if (piece instanceof King)
+			kings[piece.getColor().ordinal()] = (King) piece;
+		if (piece instanceof Rook)
+			add(rooks[piece.getColor().ordinal()], piece);
 	}
 
 	public void removePiece(Piece piece) {
-		if(piece instanceof King)
-			System.out.println("WARNING : YOU SHOULDN'T REMOVE A KING FROM THE GAME");
 		pieces.get(piece.getColor().ordinal()).remove(piece);
 	}
 
 	/**
 	 * Tries to move a piece from "from" to "dest"
-	 * @param from start coordinates
-	 * @param dest destination coordinates
-	 * @param whiteTurn boolean representing if white is to play
+	 *
+	 * @param from         start coordinates
+	 * @param to           destination coordinates
+	 * @param colorPlaying boolean representing if white is to play
 	 * @return boolean representing whether the piece was moved or not
 	 */
-	public boolean move(Coordinates<Integer> from, Coordinates<Integer> dest, boolean whiteTurn) {
+	public boolean move(Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
 		Piece p = getPieceAt(from);
-		Piece target = getPieceAt(dest);
+		Piece target = getPieceAt(to);
 
-		if (p == null) return false;
-		if (!(p instanceof Knight) && isPathObstructed(from, dest)) return false;
-		if (target == null) {
-			if (!p.canMoveTo(dest)) return false;
-		} else {
-			if (target.getColor() == p.getColor()) return false;
-			else if (!p.canCaptureAt(target.getCoordinates())) return false;
-		}
-		// check that our King would not be checked after the move
+		boolean movementWasValid = isMovementValid(p, target, from, to, colorPlaying);
+		if (!movementWasValid) return false;
 
-		if (target != null) {
-			target.moveTo(new Coordinates<>(-1, -1));
-		}
-		p.moveTo(dest);
+		// Castle
+		if (!check && p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
+			int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
+			Rook rook = rooks[colorPlaying.ordinal()][rookId];
 
-		Coordinates<Integer> playingKingCords = kings[whiteTurn ? 0 : 1].getCoordinates();
-		for (Piece oppenentPiece : (whiteTurn ? pieces.get(BLACK) : pieces.get(WHITE))) {
-			// vérifier capture at la position du roi
-			boolean opponentCanCapture = oppenentPiece.canCaptureAt(playingKingCords);
-			if (opponentCanCapture && !isPathObstructed(oppenentPiece.getCoordinates(), playingKingCords)){
-				System.out.println("Illegal move, your king would get checked");
-				// put back the moved pieces where they were
+			if (!castle(king, rook)) {
+				// Cancel move
+				if (target != null)
+					target.moveTo(to);
 				p.moveTo(from);
-				if (target != null){
-					target.moveTo(dest);
-				}
+
 				return false;
 			}
-		}
-		// Check if opponent King is checked or not. This might not be needed
-		Coordinates<Integer> enemyKingCord = kings[whiteTurn ? 1 : 0].getCoordinates();
-		for (Piece oppenentPiece : (whiteTurn ?  pieces.get(WHITE) : pieces.get(BLACK))) {
-			if (oppenentPiece.canCaptureAt(enemyKingCord)){
-				// do eventual check related things ...
-			}
-		}
-		if (target != null) {
-			pieces.get(target.getColor().ordinal()).remove(target);
-		}
-		return true;
-	}
 
-	public void updateView(ChessView view) {
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Piece p = getPieceAt(new Coordinates<>(i, j));
-				if (p == null) {
-					view.removePiece(i, j);
-				} else {
-					view.putPiece(p.getGraphicalType(), p.getColor(), i, j);
-				}
+			return true;
+		} else {
+			// Normal move
+			if (target != null)
+				target.moveTo(new Coordinates<>(-1, -1));
+			p.moveTo(to);
+
+			// Control if any opponent piece can capture the king
+			Coordinates<Integer> playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
+			if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
+				// Cancel move
+				if (target != null)
+					target.moveTo(to);
+				p.moveTo(from);
+
+				return false;
 			}
+
+			// Remove targeted piece, if any
+			if (target != null) {
+				pieces.get(target.getColor().ordinal()).remove(target);
+			}
+
+			check = false;
 		}
+
+		// Control if opponent King is checked or not
+		Coordinates<Integer> opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
+		check = verifyCheck(colorPlaying, opponentKingCoordinates);
+
+		return true;
 	}
 
 	/**
 	 * Verifies that path between a coordinate to another is obstructed
+	 *
 	 * @param from initial coordinates
 	 * @param dest destination coordinates
 	 * @return boolean that shows is the path is obstructed
-	 * @throws ArrayIndexOutOfBoundsException is thrown if given coordinates are out of game board
+	 * @throws ArrayIndexOutOfBoundsException when the given position is out of the board
 	 */
-	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
+	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) {
+		if (from == null || dest == null) throw new NullPointerException();
+		if (from.equals(dest)) return false;
+
 		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
 
-		int x = from.x() + dx;
-		int y = from.y() + dy;
-
 		// * infinite loop here
-		while (x != dest.x() || y != dest.y()) {
-			if(getPieceAt(new Coordinates<>(x, y)) != null) return true;
-			x += dx;
-			y += dy;
+		for (Coordinates<Integer> it = from.move(dx, dy); isInBoundaries(it) && !it.equals(dest); it = it.move(dx, dy)) {
+			if (getPieceAt(it) != null) return true;
 		}
+
 		return false;
 	}
 
-	public Piece getPieceAt(Coordinates<Integer> pos){
+	public Piece getPieceAt(Coordinates<Integer> pos) {
+		if (pos == null) throw new NullPointerException("Coordinates cannot be null");
+		if (!isInBoundaries(pos))
+			throw new IllegalArgumentException(String.format("Invalid coordinates %s.", pos));
 		for (Piece p : pieces.get(WHITE)) {
 			if (pos.equals(p.getCoordinates()))
 				return p;
@@ -130,6 +146,66 @@ public class Board {
 			if (pos.equals(p.getCoordinates()))
 				return p;
 		}
+
 		return null;
+	}
+
+	public boolean isChecked() {
+		return check;
+	}
+
+	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
+		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
+			boolean isOnPath = oppenentPiece.canCaptureAt(position);
+			boolean isReachable = oppenentPiece instanceof Knight || !isPathObstructed(oppenentPiece.getCoordinates(), position);
+
+			if (isOnPath && isReachable) return true;
+		}
+
+		return false;
+	}
+
+	private boolean isInBoundaries(Coordinates<Integer> position) {
+		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
+	}
+
+	private boolean isMovementValid(Piece p, Piece target, Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
+		// General invalid movement cases
+		if (p == null || !p.getColor().equals(colorPlaying) || !(p instanceof Knight) && isPathObstructed(from, to)) {
+			return false;
+		}
+		// Invalid movement cases depending on the destination
+		if (target == null) {
+			return p.canMoveTo(to);
+		} else {
+			if (target.getColor() == p.getColor()) return false;
+			else return p.canCaptureAt(target.getCoordinates());
+		}
+	}
+
+	private void add(Piece[] array, Piece p) {
+		int i = 0;
+		while (i < array.length && array[i] != null) ++i;
+
+		array[i] = p;
+	}
+
+	private boolean castle(King king, Rook rook) {
+		if (king.hasMoved() || rook.hasMoved()) return false;
+
+		int d = rook.getCoordinates().x() < king.getCoordinates().x() ? -1 : 1;
+		var to = king.getCoordinates().move(d * CASTLE_DIST, 0);
+		// The rook is not going to `to`, but the path has to be clear anyway
+		if (isPathObstructed(rook.getCoordinates(), king.getCoordinates())) return false;
+
+		// Check if an opponent can reach one of the squares on the path
+		for (var it = king.getCoordinates().move(d, 0); !it.equals(to); it = it.move(d, 0)) {
+			if (verifyCheck(king.getColor().toggle(), it)) return false;
+		}
+
+		rook.moveTo(king.getCoordinates().move(d, 0));
+		king.moveTo(king.getCoordinates().move(d * CASTLE_DIST, 0));
+
+		return true;
 	}
 }

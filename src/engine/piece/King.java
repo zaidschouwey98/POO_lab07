@@ -1,13 +1,13 @@
 package engine.piece;
 
 import chess.PieceType;
-import chess.PieceType;
 import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.*;
 
-public class King extends Piece {
-	private boolean hasMoved;
+public class King extends FirstMovePiece {
+	private static final int CASTLE_DIST = 2;
+
 	public King (PlayerColor color, Coordinates<Integer> coordinates){
 		super(color, coordinates,
 			new Movement[] {
@@ -19,8 +19,19 @@ public class King extends Piece {
 			}
 		);
 	}
-    @Override
-    public PieceType getGraphicalType() {
+
+	@Override
+	public PieceType getGraphicalType() {
         return PieceType.KING;
     }
+
+	@Override
+	public boolean isExceptionalMoveAllowed(Coordinates<Integer> dest) {
+		if (hasMoved()) return false;
+
+		boolean isLeftRook = dest.equals(getCoordinates().move(-CASTLE_DIST, 0));
+		boolean isRightRook = dest.equals(getCoordinates().move(CASTLE_DIST, 0));
+
+		return isLeftRook || isRightRook;
+	}
 }

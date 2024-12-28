@@ -7,7 +7,7 @@ import engine.piece.*;
 
 public class ChessGame implements ChessController {
 	private ChessView view;
-	private boolean whiteTurn = true;
+	private PlayerColor colorPlaying = PlayerColor.WHITE;
 	private Board board;
 
 	@Override
@@ -17,7 +17,7 @@ public class ChessGame implements ChessController {
 		this.view = view;
 		view.startView();
 
-		board.updateView(view);
+		updateView(board);
 	}
 
 	@Override
@@ -26,36 +26,31 @@ public class ChessGame implements ChessController {
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
 
 		Piece movingPiece = board.getPieceAt(from);
-		if(movingPiece == null || pieceNotInPlayingTeam(movingPiece)) {
-			return false;
+		if (!board.move(from, to, colorPlaying)) return false;
+		colorPlaying = colorPlaying.toggle();
+
+		// Pawn promotion
+		if (movingPiece instanceof Pawn && (to.y() == 0 || to.y() == 7)) {
+			PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
+				new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
+			);
+
+			board.removePiece(movingPiece);
+			board.addPiece(choice.piece());
 		}
-		boolean moveWasDone = board.move(from, to, whiteTurn);
-		if (moveWasDone) {
-			// Pawn promotion
-			if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
-				PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
-						new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-						new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-						new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-						new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
-						);
+		updateView(board);
 
-				board.removePiece(movingPiece);
-				board.addPiece(choice.piece);
-			}
-			whiteTurn = !whiteTurn;
-		}
-		board.updateView(view);
-
-		// this print is for dev purposes only
-
-		return moveWasDone;
+		return true;
 	}
 
 	@Override
 	public void newGame() {
-		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
-		whiteTurn = true;
+		board = new Board();
+		colorPlaying = PlayerColor.WHITE;
+
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
@@ -76,27 +71,35 @@ public class ChessGame implements ChessController {
 			board.addPiece(new Queen(color, new Coordinates<>(3, pieceStartRow)));
 			board.addPiece(new King(color, new Coordinates<>(4, pieceStartRow)));
 
-			for (int i = 0 ; i < 8 ; ++i){
+			for (int i = 0; i < 8; ++i) {
 				board.addPiece(new Pawn(color, new Coordinates<>(i, pawnStartRow)));
 			}
 		}
-		board.updateView(view);
+
+		updateView(board);
 	}
 
-	/**
-	 * Verifies that a piece is in the currently playing team
-	 * @param piece the piece to check
-	 * @return boolean representing if the piece is in the playing team
-	 */
-	private boolean pieceNotInPlayingTeam(Piece piece) {
-		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
+	private void updateView(Board board) {
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
+				Piece p = board.getPieceAt(new Coordinates<>(i, j));
+				if (p == null) {
+					this.view.removePiece(i, j);
+				} else {
+					this.view.putPiece(p.getGraphicalType(), p.getColor(), i, j);
+				}
+			}
+		}
+
+		if (board.isChecked()) view.displayMessage("Check !");
+		else view.displayMessage("");
 	}
 
 	record PieceUserChoice(Piece piece) implements ChessView.UserChoice {
 
 		@Override
-			public String textValue() {
-				return piece.getClass().getSimpleName();
-			}
+		public String textValue() {
+			return piece.getClass().getSimpleName();
 		}
+	}
 }
