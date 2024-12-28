@@ -2,26 +2,10 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
-import chess.PieceType;
 import chess.PlayerColor;
 import engine.piece.*;
 
 public class ChessGame implements ChessController {
-	static class PieceMemory implements ChessView.UserChoice{
-		private final PieceType p;
-		PieceMemory(PieceType piece){
-			this.p = piece;
-		}
-
-		public PieceType getPieceType() {
-			return p;
-		}
-		@Override
-		public String textValue() {
-			return p.toString();
-		}
-	}
-
 	private ChessView view;
 	private boolean whiteTurn = true;
 	private Board board;
@@ -47,36 +31,17 @@ public class ChessGame implements ChessController {
 		}
 		boolean moveWasDone = board.move(from, to, whiteTurn);
 		if (moveWasDone) {
-			// vérifier que la destination était la première ou la dernière rangée
-			if (toY == 0 || toY == 7){
-				if (movingPiece instanceof Pawn) {
-					PieceMemory choice = view.askUser("Promotion", "Promotion choice",
-                            new PieceMemory(PieceType.KNIGHT),
-                            new PieceMemory(PieceType.BISHOP),
-                            new PieceMemory(PieceType.ROOK),
-                            new PieceMemory(PieceType.QUEEN)
-							);
-					Piece newPiece;
-					switch(choice.getPieceType()){
-						case PieceType.KNIGHT:
-							newPiece = new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY));
-							break;
-						case PieceType.BISHOP:
-							newPiece = new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY));
-							break;
-						case PieceType.ROOK:
-							// TODO remove castling rights to this piece
-							newPiece = new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY));
-							break;
-						case PieceType.QUEEN:
-							newPiece = new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY));
-							break;
-						default:
-							newPiece = null;
-					}
-					board.removePiece(movingPiece);
-					board.addPiece(newPiece);
-				}
+			// Pawn promotion
+			if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
+				PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
+						new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+						new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+						new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+						new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
+						);
+
+				board.removePiece(movingPiece);
+				board.addPiece(choice.piece);
 			}
 			whiteTurn = !whiteTurn;
 		}
@@ -127,17 +92,11 @@ public class ChessGame implements ChessController {
 		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
 	}
 
-	private ChessView.UserChoice pieceTypeToUserChoice(PieceType piece) {
-		return new ChessView.UserChoice() {
-			private final PieceType p = piece;
+	record PieceUserChoice(Piece piece) implements ChessView.UserChoice {
 
-			public PieceType getPieceType() {
-				return p;
-			}
-			@Override
+		@Override
 			public String textValue() {
-				return p.toString();
+				return piece.getClass().getSimpleName();
 			}
-		};
-	}
+		}
 }
