@@ -8,10 +8,16 @@ import engine.piece.Piece;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
+	private static final int DEFAULT_WIDTH = 8;
+	private static final int DEFAULT_HEIGHT = 8;
+
+	private final int width;
+	private final int height;
 
 	private final King[] kings = new King[2];
 	private boolean check = false;
@@ -20,6 +26,15 @@ public class Board {
 			new LinkedList<>(), // white pieces
 			new LinkedList<>()	// black pieces
 	);
+
+	public Board(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	public Board() {
+		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
 
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
@@ -43,27 +58,16 @@ public class Board {
 	public boolean move(Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
 		Piece p = getPieceAt(from);
 		Piece target = getPieceAt(to);
-		boolean triesToEnpassant = false;
 
-		if (p == null) return false;
+		if (!isMovementValid(p, target, from, to, colorPlaying)) return false;
 
-		if (p instanceof Pawn && target == null && from.x() != to.x()) {
-			Coordinates<Integer> capturePos = new Coordinates<>(to.x(), from.y());
-			Piece enPassantTarget = getPieceAt(capturePos);
+		// Capture by enpassant
+		if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
+			Coordinates<Integer> enPassantCapturePos = new Coordinates<>(to.x(), from.y());
+			Piece enPassantTarget = getPieceAt(enPassantCapturePos);
 			if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
 				removePiece(enPassantTarget);
-				triesToEnpassant = true;
-			} else {
-				return false;
 			}
-		}
-
-		if (!(p instanceof Knight) && isPathObstructed(from, to)) return false;
-		if (target == null) {
-			if (!p.canMoveTo(to) && !triesToEnpassant) return false;
-		} else {
-			if (target.getColor() == p.getColor()) return false;
-			else if (!p.canCaptureAt(target.getCoordinates())) return false;
 		}
 
 		if (target != null)
@@ -102,23 +106,24 @@ public class Board {
 	 *
 	 * @throws ArrayIndexOutOfBoundsException when the given position is out of the board
 	 */
-	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
+	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) {
+		if (from == null || dest == null) throw new NullPointerException();
+		if (from.equals(dest)) return false;
+
 		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
 
-		int x = from.x() + dx;
-		int y = from.y() + dy;
-
 		// * infinite loop here
-		while (x != dest.x() || y != dest.y()) {
-			if(getPieceAt(new Coordinates<>(x, y)) != null) return true;
-			x += dx;
-			y += dy;
+		for (Coordinates<Integer> it = from.move(dx, dy); isInBoundaries(it) && !it.equals(dest); it = it.move(dx, dy)) {
+			if (getPieceAt(it) != null) return true;
 		}
+
 		return false;
 	}
 
-	public Piece getPieceAt(Coordinates<Integer> pos){
+	public Piece getPieceAt(Coordinates<Integer> pos) {
+		if (pos == null) throw new NullPointerException("Coordinates cannot be null");
+		if (!isInBoundaries(pos)) throw new IllegalArgumentException(String.format("Invalid coordinates (%d,%d)", pos.x(), pos.y()));
 		for (Piece p : pieces.get(WHITE)) {
 			if (pos.equals(p.getCoordinates()))
 				return p;
@@ -127,6 +132,7 @@ public class Board {
 			if (pos.equals(p.getCoordinates()))
 				return p;
 		}
+
 		return null;
 	}
 
@@ -136,11 +142,38 @@ public class Board {
 
 	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
 		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
-			if (oppenentPiece.canCaptureAt(position)){
-				return true;
-			}
+			boolean isOnPath = oppenentPiece.canCaptureAt(position);
+			boolean isReachable = oppenentPiece instanceof Knight || !isPathObstructed(oppenentPiece.getCoordinates(), position);
+
+			if (isOnPath && isReachable) return true;
 		}
 
 		return false;
+	}
+
+	private boolean isInBoundaries(Coordinates<Integer> position) {
+		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
+	}
+
+	private boolean isMovementValid(Piece p, Piece target, Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
+		// General invalid movement cases
+		if (
+			p == null ||
+				!p.getColor().equals(colorPlaying) ||
+				!(p instanceof Knight) && isPathObstructed(from, to)
+		) return false;
+		// Invalid movement cases depending on the destination
+		if (target == null) {
+			if (p instanceof Pawn && from.x() != to.x()) {
+				// Tries to enpassant
+				Coordinates<Integer> enPassantCapturePos = new Coordinates<>(to.x(), from.y());
+				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
+				return enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant();
+			}
+			return p.canMoveTo(to);
+		} else {
+			if (target.getColor() == p.getColor()) return false;
+			else return p.canCaptureAt(target.getCoordinates());
+		}
 	}
 }

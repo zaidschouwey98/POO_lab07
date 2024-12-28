@@ -26,26 +26,24 @@ public class ChessGame implements ChessController {
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
 
 		Piece movingPiece = board.getPieceAt(from);
-		boolean moveWasValid = board.move(from, to, colorPlaying);
-		if (moveWasValid) {
-			colorPlaying = colorPlaying.toggle();
+		if (!board.move(from, to, colorPlaying)) return false;
+		colorPlaying = colorPlaying.toggle();
 
-			// Pawn promotion
-			if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
-				PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
-					new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-					new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-					new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
-					new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
-				);
+		// Pawn promotion
+		if (toY == 0 || toY == 7 && movingPiece instanceof Pawn) {
+			PieceUserChoice choice = view.askUser("Promotion", "Promotion choice",
+				new PieceUserChoice(new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY))),
+				new PieceUserChoice(new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY)))
+			);
 
-				board.removePiece(movingPiece);
-				board.addPiece(choice.piece);
-			}
+			board.removePiece(movingPiece);
+			board.addPiece(choice.piece);
 		}
 		updateView(board);
 
-		return moveWasValid;
+		return true;
 	}
 
 	@Override
