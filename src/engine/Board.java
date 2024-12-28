@@ -57,15 +57,7 @@ public class Board {
 		Piece p = getPieceAt(from);
 		Piece target = getPieceAt(to);
 
-		if (p == null) return false;
-		if (!p.getColor().equals(colorPlaying)) return false;
-		if (!(p instanceof Knight) && isPathObstructed(from, to)) return false;
-		if (target == null) {
-			if (!p.canMoveTo(to)) return false;
-		} else {
-			if (target.getColor() == p.getColor()) return false;
-			else if (!p.canCaptureAt(target.getCoordinates())) return false;
-		}
+		if (!isMovementValid(p, target, from, to, colorPlaying)) return false;
 
 		if (target != null)
 			target.moveTo(new Coordinates<>(-1, -1));
@@ -147,5 +139,21 @@ public class Board {
 
 	private boolean isInBoundaries(Coordinates<Integer> position) {
 		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
+	}
+
+	private boolean isMovementValid(Piece p, Piece target, Coordinates<Integer> from, Coordinates<Integer> to, PlayerColor colorPlaying) {
+		// General invalid movement cases
+		if (
+			p == null ||
+				!p.getColor().equals(colorPlaying) ||
+				!(p instanceof Knight) && isPathObstructed(from, to)
+		) return false;
+		// Invalid movement cases depending on the destination
+		if (target == null) {
+			return p.canMoveTo(to);
+		} else {
+			if (target.getColor() == p.getColor()) return false;
+			else return p.canCaptureAt(target.getCoordinates());
+		}
 	}
 }
