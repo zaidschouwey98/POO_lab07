@@ -96,15 +96,17 @@ public class Board {
 				return false;
 			}
 
+			// Remove targeted piece, if any
+			if (target != null) {
+				pieces.get(target.getColor().ordinal()).remove(target);
+			}
+
 			check = false;
 		}
 
 		// Control if opponent King is checked or not
 		Coordinates<Integer> opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
 		check = verifyCheck(colorPlaying, opponentKingCoordinates);
-		if (target != null) {
-			pieces.get(target.getColor().ordinal()).remove(target);
-		}
 
 		return true;
 	}
