@@ -23,12 +23,6 @@ public abstract class Piece {
 
 	public abstract PieceType getGraphicalType();
 
-	/**
-	 * Does nothing by default.
-	 * Can be re-defined in order to perform actions at move time.
-	 */
-	public void performMoveActions() {}
-
 	public boolean canMoveTo(Coordinates<Integer> destination) {
 		if (isExceptionalMoveAllowed(destination)) return true;
 		for (MovementRestriction restriction : pieceMovementRestrictions)
@@ -61,9 +55,8 @@ public abstract class Piece {
 	 * Definitely moves to piece to a destination
 	 * @param destination the destination
 	 */
-	public final void moveTo(Coordinates<Integer> destination) {
+	public void moveTo(Coordinates<Integer> destination) {
 		this.coordinates = destination;
-		performMoveActions();
 	}
 
 	/**

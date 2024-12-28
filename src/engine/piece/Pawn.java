@@ -5,11 +5,10 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.*;
 
-public class Pawn extends Piece {
+public class Pawn extends FirstMovePiece {
 
 	private static final int LONG_JUMP_DIST = 2;
 	private final Movement[] captureRestrictions;
-	private boolean canLongJump = true;
 
 	public Pawn (PlayerColor color, Coordinates<Integer> coordinates) {
 		super(color, coordinates,
@@ -33,12 +32,7 @@ public class Pawn extends Piece {
 		int jumpDistance = LONG_JUMP_DIST;
 		if (getColor() == PlayerColor.BLACK) jumpDistance *= -1;
 
-		return canLongJump && dest.equals(getCoordinates().move(0, jumpDistance));
-	}
-
-	@Override
-	public void performMoveActions() {
-		canLongJump = false;
+		return !hasMoved() && dest.equals(getCoordinates().move(0, jumpDistance));
 	}
 
 	@Override
