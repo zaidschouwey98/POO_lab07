@@ -16,7 +16,7 @@ public class Pawn extends FirstMovePiece {
 			new Movement[] {
 				new AxialMovement()
 			},
-			new MovementRestriction[] {
+			new Movement[] {
 				new DirectionMovementRestriction(color),
 				new RadiusMovementRestriction(1)  // Radius changed to 1 after first move
 			}

@@ -5,7 +5,6 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.AxialMovement;
 import engine.movements.Movement;
-import engine.movements.MovementRestriction;
 
 public class Rook extends FirstMovePiece {
 	public Rook (PlayerColor color, Coordinates<Integer> coordinates){
@@ -13,7 +12,7 @@ public class Rook extends FirstMovePiece {
 			new Movement[] {
 				new AxialMovement()
 			},
-			new MovementRestriction[] { }
+			new Movement[] { }
 		);
 	}
 

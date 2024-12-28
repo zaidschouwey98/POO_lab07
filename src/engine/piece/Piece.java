@@ -4,16 +4,15 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.Movement;
-import engine.movements.MovementRestriction;
 
 public abstract class Piece {
 	private final PlayerColor color;
 	protected Coordinates<Integer> coordinates;
 	private final Movement[] pieceMovements;
 
-	private final MovementRestriction[] pieceMovementRestrictions;
+	private final Movement[] pieceMovementRestrictions;
 
-	protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, MovementRestriction[] pieceMovementRestrictions) {
+	protected Piece(PlayerColor color, Coordinates<Integer> coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
 		this.color = color;
 		this.coordinates = coordinates;
 
@@ -25,7 +24,7 @@ public abstract class Piece {
 
 	public boolean canMoveTo(Coordinates<Integer> destination) {
 		if (isExceptionalMoveAllowed(destination)) return true;
-		for (MovementRestriction restriction : pieceMovementRestrictions)
+		for (Movement restriction : pieceMovementRestrictions)
             if (!restriction.canMove(this.coordinates, destination)) {
 				return false;
 			}

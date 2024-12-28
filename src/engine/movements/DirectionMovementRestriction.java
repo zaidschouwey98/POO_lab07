@@ -3,7 +3,7 @@ package engine.movements;
 import chess.PlayerColor;
 import engine.Coordinates;
 
-public class DirectionMovementRestriction implements MovementRestriction {
+public class DirectionMovementRestriction implements Movement {
 
 	private final PlayerColor color;
 

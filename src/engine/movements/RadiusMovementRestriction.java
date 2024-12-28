@@ -2,7 +2,7 @@ package engine.movements;
 
 import engine.Coordinates;
 
-public class RadiusMovementRestriction implements MovementRestriction {
+public class RadiusMovementRestriction implements Movement {
 
 	private final int movementRadius;
 

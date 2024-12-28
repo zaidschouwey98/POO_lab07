@@ -14,7 +14,7 @@ public class King extends FirstMovePiece {
 				new AxialMovement(),
 				new DiagonalMovement()
 			},
-			new MovementRestriction[] {
+			new Movement[] {
 				new RadiusMovementRestriction(1)
 			}
 		);
