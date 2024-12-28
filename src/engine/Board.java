@@ -119,9 +119,10 @@ public class Board {
 
 	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
 		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
-			if (oppenentPiece.canCaptureAt(position)){
-				return true;
-			}
+			boolean isOnPath = oppenentPiece.canCaptureAt(position);
+			boolean isReachable = !isPathObstructed(oppenentPiece.getCoordinates(), position);
+
+			if (isOnPath && isReachable) return true;
 		}
 
 		return false;
