@@ -7,6 +7,20 @@ import chess.PlayerColor;
 import engine.piece.*;
 
 public class ChessGame implements ChessController {
+	static class PieceMemory implements ChessView.UserChoice{
+		private final PieceType p;
+		PieceMemory(PieceType piece){
+			this.p = piece;
+		}
+
+		public PieceType getPieceType() {
+			return p;
+		}
+		@Override
+		public String textValue() {
+			return p.toString();
+		}
+	}
 
 	private ChessView view;
 	private boolean whiteTurn = true;
@@ -36,26 +50,32 @@ public class ChessGame implements ChessController {
 			// vérifier que la destination était la première ou la dernière rangée
 			if (toY == 0 || toY == 7){
 				if (movingPiece instanceof Pawn) {
-					ChessView.UserChoice choice = view.askUser("Promotion", "Promotion choice",
-							pieceTypeToUserChoice(PieceType.KNIGHT),
-							pieceTypeToUserChoice(PieceType.BISHOP),
-							pieceTypeToUserChoice(PieceType.ROOK),
-							pieceTypeToUserChoice(PieceType.QUEEN)
+					PieceMemory choice = view.askUser("Promotion", "Promotion choice",
+                            new PieceMemory(PieceType.KNIGHT),
+                            new PieceMemory(PieceType.BISHOP),
+                            new PieceMemory(PieceType.ROOK),
+                            new PieceMemory(PieceType.QUEEN)
 							);
-					System.out.println("PROMOTION : ");
-					switch(choice.toString()){
-						case "KNIGHT":
-							System.out.println("CAVALIER"); break;
-						case "BISHOP":
-							System.out.println("FOU"); break;
-						case "ROOK":
-							System.out.println("TOURELLE"); break;
-						case "QUEEN":
-							System.out.println("REINE"); break;
+					Piece newPiece;
+					switch(choice.getPieceType()){
+						case PieceType.KNIGHT:
+							newPiece = new Knight(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.BISHOP:
+							newPiece = new Bishop(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.ROOK:
+							// remove castling rights to this piece
+							newPiece = new Rook(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
+						case PieceType.QUEEN:
+							newPiece = new Queen(movingPiece.getColor(), new Coordinates<>(toX, toY));
+							break;
 						default:
-							System.out.println(choice);
+							newPiece = null;
 					}
-
+					board.removePiece(movingPiece);
+					board.addPiece(newPiece);
 				}
 			}
 			whiteTurn = !whiteTurn;

@@ -26,6 +26,12 @@ public class Board {
 			kings[piece.getColor().ordinal()] = piece;
 	}
 
+	public void removePiece(Piece piece) {
+		if(piece instanceof King)
+			System.out.println("WARNING : YOU SHOULDN'T REMOVE A KING FROM THE GAME");
+		pieces.get(piece.getColor().ordinal()).remove(piece);
+	}
+
 	/**
 	 * Tries to move a piece from "from" to "dest"
 	 * @param from start coordinates
