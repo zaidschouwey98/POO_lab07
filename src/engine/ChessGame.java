@@ -2,6 +2,7 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.piece.*;
 
@@ -32,6 +33,31 @@ public class ChessGame implements ChessController {
 		}
 		boolean moveWasDone = board.move(from, to, whiteTurn);
 		if (moveWasDone) {
+			// vérifier que la destination était la première ou la dernière rangée
+			if (toY == 0 || toY == 7){
+				if (movingPiece instanceof Pawn) {
+					ChessView.UserChoice choice = view.askUser("Promotion", "Promotion choice",
+							pieceTypeToUserChoice(PieceType.KNIGHT),
+							pieceTypeToUserChoice(PieceType.BISHOP),
+							pieceTypeToUserChoice(PieceType.ROOK),
+							pieceTypeToUserChoice(PieceType.QUEEN)
+							);
+					System.out.println("PROMOTION : ");
+					switch(choice.toString()){
+						case "KNIGHT":
+							System.out.println("CAVALIER"); break;
+						case "BISHOP":
+							System.out.println("FOU"); break;
+						case "ROOK":
+							System.out.println("TOURELLE"); break;
+						case "QUEEN":
+							System.out.println("REINE"); break;
+						default:
+							System.out.println(choice);
+					}
+
+				}
+			}
 			whiteTurn = !whiteTurn;
 		}
 		board.updateView(view);
@@ -80,5 +106,19 @@ public class ChessGame implements ChessController {
 	 */
 	private boolean pieceNotInPlayingTeam(Piece piece) {
 		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
+	}
+
+	private ChessView.UserChoice pieceTypeToUserChoice(PieceType piece) {
+		return new ChessView.UserChoice() {
+			private final PieceType p = piece;
+
+			public PieceType getPieceType() {
+				return p;
+			}
+			@Override
+			public String textValue() {
+				return p.toString();
+			}
+		};
 	}
 }

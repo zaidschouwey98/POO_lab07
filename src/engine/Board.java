@@ -20,9 +20,6 @@ public class Board {
 			new LinkedList<>()	// black pieces
 	);
 
-
-
-
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
 		if(piece instanceof King)
@@ -96,13 +93,12 @@ public class Board {
 		}
 	}
 
-
 	/**
 	 * Verifies that path between a coordinate to another is obstructed
 	 * @param from initial coordinates
 	 * @param dest destination coordinates
 	 * @return boolean that shows is the path is obstructed
-	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws ArrayIndexOutOfBoundsException is thrown if given coordinates are out of game board
 	 */
 	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
 		int dx = (int) Math.signum(dest.x() - from.x());
