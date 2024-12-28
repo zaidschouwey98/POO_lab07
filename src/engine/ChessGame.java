@@ -83,5 +83,8 @@ public class ChessGame implements ChessController {
 				}
 			}
 		}
+
+		if (board.isChecked()) view.displayMessage("Check !");
+		else view.displayMessage("");
 	}
 }
