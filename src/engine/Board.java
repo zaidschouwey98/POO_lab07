@@ -11,6 +11,11 @@ import java.util.List;
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
+	private static final int DEFAULT_WIDTH = 8;
+	private static final int DEFAULT_HEIGHT = 8;
+
+	private final int width;
+	private final int height;
 
 	private final King[] kings = new King[2];
 	private boolean check = false;
@@ -19,6 +24,15 @@ public class Board {
 			new LinkedList<>(), // white pieces
 			new LinkedList<>()	// black pieces
 	);
+
+	public Board(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	public Board() {
+		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	}
 
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
@@ -44,6 +58,7 @@ public class Board {
 		Piece target = getPieceAt(to);
 
 		if (p == null) return false;
+		if (!p.getColor().equals(colorPlaying)) return false;
 		if (!(p instanceof Knight) && isPathObstructed(from, to)) return false;
 		if (target == null) {
 			if (!p.canMoveTo(to)) return false;
@@ -85,23 +100,24 @@ public class Board {
 	 *
 	 * @throws ArrayIndexOutOfBoundsException when the given position is out of the board
 	 */
-	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) throws ArrayIndexOutOfBoundsException {
+	private boolean isPathObstructed(Coordinates<Integer> from, Coordinates<Integer> dest) {
+		if (from == null || dest == null) throw new NullPointerException();
+		if (from.equals(dest)) return false;
+
 		int dx = (int) Math.signum(dest.x() - from.x());
 		int dy = (int) Math.signum(dest.y() - from.y());
 
-		int x = from.x() + dx;
-		int y = from.y() + dy;
-
 		// * infinite loop here
-		while (x != dest.x() || y != dest.y()) {
-			if(getPieceAt(new Coordinates<>(x, y)) != null) return true;
-			x += dx;
-			y += dy;
+		for (Coordinates<Integer> it = from.move(dx, dy); isInBoundaries(it) && !it.equals(dest); it = it.move(dx, dy)) {
+			if (getPieceAt(it) != null) return true;
 		}
+
 		return false;
 	}
 
-	public Piece getPieceAt(Coordinates<Integer> pos){
+	public Piece getPieceAt(Coordinates<Integer> pos) {
+		if (pos == null) throw new NullPointerException("Coordinates cannot be null");
+		if (!isInBoundaries(pos)) throw new IllegalArgumentException(String.format("Invalid coordinates (%d,%d)", pos.x(), pos.y()));
 		for (Piece p : pieces.get(WHITE)) {
 			if (pos.equals(p.getCoordinates()))
 				return p;
@@ -110,6 +126,7 @@ public class Board {
 			if (pos.equals(p.getCoordinates()))
 				return p;
 		}
+
 		return null;
 	}
 
@@ -120,11 +137,15 @@ public class Board {
 	private boolean verifyCheck(PlayerColor opponentColor, Coordinates<Integer> position) {
 		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
 			boolean isOnPath = oppenentPiece.canCaptureAt(position);
-			boolean isReachable = !isPathObstructed(oppenentPiece.getCoordinates(), position);
+			boolean isReachable = oppenentPiece instanceof Knight || !isPathObstructed(oppenentPiece.getCoordinates(), position);
 
 			if (isOnPath && isReachable) return true;
 		}
 
 		return false;
+	}
+
+	private boolean isInBoundaries(Coordinates<Integer> position) {
+		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
 	}
 }
