@@ -8,7 +8,7 @@ import engine.piece.*;
 public class ChessGame implements ChessController {
 
 	private ChessView view;
-	private boolean whiteTurn = true;
+	private PlayerColor colorPlaying = PlayerColor.WHITE;
 	private Board board;
 
 	@Override
@@ -27,22 +27,22 @@ public class ChessGame implements ChessController {
 		Coordinates<Integer> to = new Coordinates<>(toX, toY);
 
 		Piece movingPiece = board.getPieceAt(from);
-		if(movingPiece == null || pieceNotInPlayingTeam(movingPiece)) {
+		if (movingPiece == null || !movingPiece.getColor().equals(colorPlaying)) {
 			return false;
 		}
-		boolean moveWasDone = board.move(from, to, whiteTurn);
-		if (moveWasDone) {
-			whiteTurn = !whiteTurn;
+		boolean moveWasValid = board.move(from, to, colorPlaying);
+		if (moveWasValid) {
+			colorPlaying = colorPlaying.toggle();
 		}
 		board.updateView(view);
 
-		return moveWasDone;
+		return moveWasValid;
 	}
 
 	@Override
 	public void newGame() {
-		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
-		whiteTurn = true;
+		colorPlaying = PlayerColor.WHITE;
+
 		int pieceStartRow;
 		int pawnStartRow;
 		for (PlayerColor color : PlayerColor.values()) {
@@ -63,19 +63,13 @@ public class ChessGame implements ChessController {
 			board.addPiece(new Queen(color, new Coordinates<>(3, pieceStartRow)));
 			board.addPiece(new King(color, new Coordinates<>(4, pieceStartRow)));
 
-			for (int i = 0 ; i < 8 ; ++i){
+			for (int i = 0 ; i < 8 ; ++i) {
 				board.addPiece(new Pawn(color, new Coordinates<>(i, pawnStartRow)));
 			}
 		}
-		board.updateView(view);
-	}
 
-	/**
-	 * Verifies that a piece is in the currently playing team
-	 * @param piece the piece to check
-	 * @return boolean representing if the piece is in the playing team
-	 */
-	private boolean pieceNotInPlayingTeam(Piece piece) {
-		return whiteTurn && piece.getColor() != PlayerColor.WHITE || !whiteTurn && piece.getColor() != PlayerColor.BLACK;
+		// TODO remettre du vide sur les cases où il ne doit pas y avoir de pièces au départ
+		// TODO déplacer updateView dans ChessGame
+		board.updateView(view);
 	}
 }
