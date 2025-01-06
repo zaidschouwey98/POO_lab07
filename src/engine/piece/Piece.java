@@ -10,12 +10,12 @@ import engine.movements.Movement;
  */
 public abstract class Piece {
 	private final PlayerColor color;
-	protected Coordinates coordinates;
+	private Coordinates coordinates;
 	private final Movement[] pieceMovements;
 
 	private final Movement[] pieceMovementRestrictions;
 
-	protected Piece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
+	public Piece(PlayerColor color, Coordinates coordinates, Movement[] pieceMovements, Movement[] pieceMovementRestrictions) {
 		this.color = color;
 		this.coordinates = coordinates;
 
