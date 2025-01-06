@@ -105,12 +105,12 @@ public class Board {
 			return true;
 		} else {
 			// Handle en passant for pawns
-			if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
+			if (isEnPassantCapture(from, to)) {
 				Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
 				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
-				if (enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant()) {
-					removePiece(enPassantTarget);
-				}
+				removePiece(enPassantTarget);
+			} else {
+				resetEnPassantFlags(colorPlaying.ordinal() == WHITE ? BLACK : WHITE);
 			}
 
 			// Normal move
@@ -141,9 +141,6 @@ public class Board {
 		Coordinates opponentKingCoordinates = kings[colorPlaying.toggle().ordinal()].getCoordinates();
 		check = verifyCheck(colorPlaying, opponentKingCoordinates);
 
-		if (p instanceof Pawn) {
-			((Pawn) p).setCapturableByEnpassant(Math.abs(from.y() - to.y()) == 2);
-		}
 		return true;
 	}
 
@@ -242,11 +239,9 @@ public class Board {
 		}
 		// Invalid movement cases depending on the destination
 		if (target == null) {
-			if (p instanceof Pawn && from.x() != to.x()) {
+			if (p instanceof Pawn && isEnPassantCapture(from, to)) {
 				// Tries to enpassant
-				Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
-				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
-				return enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant();
+				return true;
 			}
 			return p.canMoveTo(to);
 		} else {
@@ -292,5 +287,25 @@ public class Board {
 		king.moveTo(king.getCoordinates().move(d * CASTLE_DIST, 0));
 
 		return true;
+	}
+
+	private void resetEnPassantFlags(int playerColor) {
+		for (Piece piece : pieces.get(playerColor)) {
+			if (piece instanceof Pawn) {
+				((Pawn) piece).setCapturableByEnpassant(false);
+			}
+		}
+	}
+
+	private boolean isEnPassantCapture(Coordinates from, Coordinates to) {
+		Piece p = getPieceAt(from);
+		if (!(p instanceof Pawn)) return false;
+
+		if (from.x() != to.x() && getPieceAt(to) == null) {
+			Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
+			Piece enPassantTarget = getPieceAt(enPassantCapturePos);
+			return enPassantTarget instanceof Pawn && ((Pawn) enPassantTarget).isCapturableByEnpassant();
+		}
+		return false;
 	}
 }
