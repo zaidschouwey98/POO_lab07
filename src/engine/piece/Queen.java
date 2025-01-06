@@ -7,6 +7,10 @@ import engine.movements.AxialMovement;
 import engine.movements.DiagonalMovement;
 import engine.movements.Movement;
 
+/**
+ * Represents the Queen piece in chess.
+ * Queens can move any number of squares in a line or diagonally.
+ */
 public class Queen extends Piece {
 	public Queen(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,

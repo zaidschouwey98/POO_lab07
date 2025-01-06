@@ -5,11 +5,20 @@ import chess.ChessView;
 import chess.PlayerColor;
 import engine.piece.*;
 
+/**
+ * Manages the chess game, starting the game, handling moves,
+ * and updating the view.
+ */
 public class ChessGame implements ChessController {
 	private ChessView view;
 	private PlayerColor colorPlaying = PlayerColor.WHITE;
 	private Board board;
 
+	/**
+	 * Sets up the chess game and shows the chessboard on the screen.
+	 *
+	 * @param view the screen display for the chess game
+	 */
 	@Override
 	public void start(ChessView view) {
 		this.board = new Board();
@@ -20,6 +29,15 @@ public class ChessGame implements ChessController {
 		updateView(board);
 	}
 
+	/**
+	 * Moves a piece on the board from one position to another.
+	 *
+	 * @param fromX the starting column
+	 * @param fromY the starting row
+	 * @param toX   the target column
+	 * @param toY   the target row
+	 * @return true if the move is valid and false otherwise
+	 */
 	@Override
 	public boolean move(int fromX, int fromY, int toX, int toY) {
 		Coordinates from = new Coordinates(fromX, fromY);
@@ -46,6 +64,9 @@ public class ChessGame implements ChessController {
 		return true;
 	}
 
+	/**
+	 * Starts a new game by resetting the board and adding all pieces to their starting positions.
+	 */
 	@Override
 	public void newGame() {
 		board = new Board();
@@ -79,6 +100,11 @@ public class ChessGame implements ChessController {
 		updateView(board);
 	}
 
+	/**
+	 * Updates the chessboard display to show the current state of the game.
+	 *
+	 * @param board the current state of the game board
+	 */
 	private void updateView(Board board) {
 		for (int i = 0; i < 8; ++i) {
 			for (int j = 0; j < 8; ++j) {
@@ -95,6 +121,9 @@ public class ChessGame implements ChessController {
 		else view.displayMessage("");
 	}
 
+	/**
+	 * Represents the player's choice of pieces when promoting a pawn.
+	 */
 	record PieceUserChoice(Piece piece) implements ChessView.UserChoice {
 
 		@Override

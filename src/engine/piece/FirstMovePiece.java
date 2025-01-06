@@ -18,6 +18,11 @@ public abstract class FirstMovePiece extends Piece {
 		hasMoved = true;
 	}
 
+	/**
+	 * Checks if the piece has moved before.
+	 *
+	 * @return true if the piece has already moved, false otherwise
+	 */
 	public boolean hasMoved() {
 		return hasMoved;
 	}

@@ -3,10 +3,18 @@ package engine.movements;
 import chess.PlayerColor;
 import engine.Coordinates;
 
+/**
+ * Restricts movement to a specific direction, useful for pawns.
+ */
 public class DirectionMovementRestriction implements Movement {
 
 	private final PlayerColor color;
 
+	/**
+	 * Sets the movement direction based on the player  color.
+	 *
+	 * @param color the player color
+	 */
 	public DirectionMovementRestriction(PlayerColor color) {
 		this.color = color;
 	}

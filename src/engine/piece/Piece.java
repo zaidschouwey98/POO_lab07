@@ -5,6 +5,9 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.Movement;
 
+/**
+ * Represents a chess piece. All pieces inherit from this abstract class.
+ */
 public abstract class Piece {
 	private final PlayerColor color;
 	protected Coordinates coordinates;
@@ -20,8 +23,19 @@ public abstract class Piece {
 		this.pieceMovementRestrictions = pieceMovementRestrictions;
 	}
 
+	/**
+	 * Gets the visual type of the piece.
+	 *
+	 * @return the type of the piece
+	 */
 	public abstract PieceType getGraphicalType();
 
+	/**
+	 * Checks if the piece can move to the target position.
+	 *
+	 * @param destination the target position
+	 * @return true if the move is valid and false otherwise
+	 */
 	public boolean canMoveTo(Coordinates destination) {
 		if (isExceptionalMoveAllowed(destination)) return true;
 		for (Movement restriction : pieceMovementRestrictions)
@@ -36,6 +50,12 @@ public abstract class Piece {
 		return false;
 	}
 
+	/**
+	 * Checks if castling (for exemple), is allowed.
+	 *
+	 * @param dest the target position
+	 * @return true if the move is allowed
+	 */
 	public boolean isExceptionalMoveAllowed(Coordinates dest) {
 		return false;
 	}
