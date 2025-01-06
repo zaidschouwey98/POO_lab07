@@ -5,6 +5,11 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.*;
 
+/**
+ * Represents the Pawn piece in chess.
+ * Pawns move forward one square, and two square if it's their first move.
+ * They can capture diagonally, and en passant.
+ */
 public class Pawn extends FirstMovePiece {
 
 	private static final int LONG_JUMP_DIST = 2;

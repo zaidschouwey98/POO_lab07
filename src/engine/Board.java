@@ -10,7 +10,10 @@ import engine.piece.Rook;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Represents the chessboard, manages the state, pieces, and movement.
+ * Handles castling, en passant, and checking for checks.
+ */
 public class Board {
 	private static final int WHITE = PlayerColor.WHITE.ordinal();
 	private static final int BLACK = PlayerColor.BLACK.ordinal();
@@ -30,15 +33,29 @@ public class Board {
 		new LinkedList<>()    // black pieces
 	);
 
+	/**
+	 * Creates a chessboard with a width and height.
+	 *
+	 * @param width  the width of the board
+	 * @param height the height of the board
+	 */
 	public Board(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
 
+	/**
+	 * Creates a chessboard with the default dimensions of 8x8.
+	 */
 	public Board() {
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
+	/**
+	 * Adds a piece to the board and updates the board state accordingly.
+	 *
+	 * @param piece the piece to be added to the board
+	 */
 	public void addPiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
 		if (piece instanceof King)
@@ -47,6 +64,11 @@ public class Board {
 			add(rooks[piece.getColor().ordinal()], piece);
 	}
 
+	/**
+	 * Removes a piece from the board.
+	 *
+	 * @param piece the piece to be removed from the board
+	 */
 	public void removePiece(Piece piece) {
 		pieces.get(piece.getColor().ordinal()).remove(piece);
 	}
@@ -82,6 +104,7 @@ public class Board {
 
 			return true;
 		} else {
+			// Handle en passant for pawns
 			if (p instanceof Pawn && target == null && !Objects.equals(from.x(), to.x())) {
 				Coordinates enPassantCapturePos = new Coordinates(to.x(), from.y());
 				Piece enPassantTarget = getPieceAt(enPassantCapturePos);
@@ -147,6 +170,13 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Get the piece located at the specified position.
+	 *
+	 * @param pos the coordinates of the position
+	 * @return the piece at the specified position, or null if no piece is present
+	 * @throws IllegalArgumentException if the position is out of the board boundaries
+	 */
 	public Piece getPieceAt(Coordinates pos) {
 		if (pos == null) throw new NullPointerException("Coordinates cannot be null");
 		if (!isInBoundaries(pos))
@@ -167,6 +197,13 @@ public class Board {
 		return check;
 	}
 
+	/**
+	 * Verifies if the king is in check.
+	 *
+	 * @param opponentColor the color of the opponent pieces
+	 * @param position      the coordinates of the king
+	 * @return true if the king is in check and false otherwise
+	 */
 	private boolean verifyCheck(PlayerColor opponentColor, Coordinates position) {
 		for (Piece oppenentPiece : pieces.get(opponentColor.ordinal())) {
 			boolean isOnPath = oppenentPiece.canCaptureAt(position);
@@ -178,10 +215,26 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Checks if a position is within the boundaries of the board.
+	 *
+	 * @param position the coordinates to check
+	 * @return true if the position is within boundaries and false otherwise
+	 */
 	private boolean isInBoundaries(Coordinates position) {
 		return position.x() >= 0 && position.x() < width && position.y() >= 0 && position.y() < height;
 	}
 
+	/**
+	 * Validates if a movement is allowed for a piece.
+	 *
+	 * @param p            the piece to be moved
+	 * @param target       the target piece at the destination, if there's one
+	 * @param from         the starting coordinates
+	 * @param to           the destination coordinates
+	 * @param colorPlaying the color of the player making the move
+	 * @return true if the movement is valid and false otherwise
+	 */
 	private boolean isMovementValid(Piece p, Piece target, Coordinates from, Coordinates to, PlayerColor colorPlaying) {
 		// General invalid movement cases
 		if (p == null || !p.getColor().equals(colorPlaying) || !(p instanceof Knight) && isPathObstructed(from, to)) {
@@ -202,6 +255,12 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Adds a piece to an array of pieces.
+	 *
+	 * @param array the array to add the piece to
+	 * @param p     the piece to be added
+	 */
 	private void add(Piece[] array, Piece p) {
 		int i = 0;
 		while (i < array.length && array[i] != null) ++i;
@@ -209,6 +268,13 @@ public class Board {
 		array[i] = p;
 	}
 
+	/**
+	 * Handles the castling move for a king and a rook.
+	 *
+	 * @param king the king involved in castling
+	 * @param rook the rook involved in castling
+	 * @return true if the castling move was successful and false otherwise
+	 */
 	private boolean castle(King king, Rook rook) {
 		if (king.hasMoved() || rook.hasMoved()) return false;
 

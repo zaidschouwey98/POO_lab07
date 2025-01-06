@@ -4,6 +4,9 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.Movement;
 
+/**
+ * This abstract class represents a piece that tracks if it has already moved since its creation.
+ */
 public abstract class FirstMovePiece extends Piece {
 	private boolean hasMoved = false;
 
@@ -18,6 +21,11 @@ public abstract class FirstMovePiece extends Piece {
 		hasMoved = true;
 	}
 
+	/**
+	 * Checks if the piece has moved before.
+	 *
+	 * @return true if the piece has already moved, false otherwise
+	 */
 	public boolean hasMoved() {
 		return hasMoved;
 	}

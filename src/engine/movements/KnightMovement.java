@@ -2,6 +2,9 @@ package engine.movements;
 
 import engine.Coordinates;
 
+/**
+ * Allows movement knight movements, which is complex in shape.
+ */
 public class KnightMovement implements Movement {
 	@Override
 	public boolean canMove(Coordinates from, Coordinates to) {

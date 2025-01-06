@@ -5,6 +5,10 @@ import chess.PlayerColor;
 import engine.Coordinates;
 import engine.movements.*;
 
+/**
+ * Represents the king piece in chess.
+ * The King can move one square in any direction.
+ */
 public class King extends FirstMovePiece {
 	private static final int CASTLE_DIST = 2;
 
