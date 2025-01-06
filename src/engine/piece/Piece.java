@@ -81,7 +81,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Gets the color of the piece
+	 * Returns the color of the piece
 	 *
 	 * @return the color of the piece
 	 */
@@ -89,6 +89,11 @@ public abstract class Piece {
 		return color;
 	}
 
+	/**
+	 * Returns the piece's coordinates.
+	 *
+	 * @return the piece's coordinates
+	 */
 	public Coordinates getCoordinates() {
 		return coordinates;
 	}
