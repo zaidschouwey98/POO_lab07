@@ -28,17 +28,30 @@ Ce document explique le travail réalisé sur le laboratoire 07 Chess. Il montre
 
 ## 4. Tests réalisés
 
-### Méthode de test
-Les tests ont été effectué  à la main.
+Les tests suivants ont été effectués:
 
-### Résultats obtenus
-| Fonctionnalité       | Scénario                     | Résultat |
-|----------------------|------------------------------|----------|
-| Déplacement de base  | Pion avance d'une case       | Passé |
-| Roque                | Roi et tour non déplacés     | Passé |
-| Déplacement illégal  | Pion en arrière              | Passé |
-| Promotion            | Pion atteint dernière rangée | Passé |
-| Vérification d'échec | Roi mit en échec             | Passé |
+| Fonctionnalité                                           | Résultat |
+|----------------------------------------------------------|----------|
+| Pion: 1er mouvement à deux cases                         | OK       |
+| Pion: prise d'une pièce adverse                          | OK       |
+| Pion: prise en passant                                   | OK       |
+| Pion: prise en passant contre un pion qui a bougé 2x     | Bloqué   |
+| Pion: prise en passant contre une pièce autre qu'un pion | Bloqué   |
+| Pion: déplacement en arrière                             | Bloqué   |
+| Pion: promotion                                          | OK       |
+| Petit roque                                              | OK       |
+| Grand roque                                              | OK       |
+| Roque en échec                                           | Bloqué   |
+| Roque avec 1+ case du chemin en échec                    | Bloqué   |
+| Roque avec la tour ou le roi qui a déjà bougé            | Bloqué   |
+| Roi: déplacement standard                                | OK       |
+| Roi: déplacement de 2+ cases                             | Bloqué   |
+| Roi: déplacement sur une case en échec                   | Bloqué   |
+| Général: déplacement standard                            | OK       |
+| Général: déplacement sur une pièce amie                  | Bloqué   |
+| Général: déplacement lors du tour adverse                | Bloqué   |
+| Général: déplacement qui met le roi ami en échec         | Bloqué   |
+| Général: déplacement obstrué par une pièce               | Bloqué   |
 
 ---
 
