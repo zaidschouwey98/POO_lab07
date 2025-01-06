@@ -51,7 +51,7 @@ public abstract class Piece {
 	}
 
 	/**
-	 * Checks if castling (for exemple), is allowed.
+	 * This method is used to implement special moves that don't fall in the piece's default moveset.
 	 *
 	 * @param dest the target position
 	 * @return true if the move is allowed
