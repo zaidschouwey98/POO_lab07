@@ -61,4 +61,7 @@ public class Pawn extends FirstMovePiece {
 	public PieceType getGraphicalType() {
 		return PieceType.PAWN;
 	}
+	public String toString(){
+		return "Pawn";
+	}
 }

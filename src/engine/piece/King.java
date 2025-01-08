@@ -38,4 +38,8 @@ public class King extends FirstMovePiece {
 
 		return isLeftRook || isRightRook;
 	}
+
+	public String toString(){
+		return "King";
+	}
 }
