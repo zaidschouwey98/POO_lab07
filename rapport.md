@@ -39,6 +39,7 @@ Les tests suivants ont été effectués:
 | Pion: prise en passant contre une pièce autre qu'un pion   | Bloqué   |
 | Pion: déplacement en arrière                               | Bloqué   |
 | Pion: promotion                                            | OK       |
+| Pion: promotion en une 3ème tour                           | OK       |
 | Petit roque                                                | OK       |
 | Grand roque                                                | OK       |
 | Roque en échec                                             | Bloqué   |

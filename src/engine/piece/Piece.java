@@ -97,5 +97,6 @@ public abstract class Piece {
 	public Coordinates getCoordinates() {
 		return coordinates;
 	}
+
 	public abstract String toString();
 }
