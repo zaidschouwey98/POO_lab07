@@ -11,6 +11,12 @@ import engine.movements.Movement;
  * Knights move in L shape and can jump over other pieces.
  */
 public class Knight extends Piece {
+	/**
+	 * Constructor for the Knight class
+	 *
+	 * @param color       color of the Knight
+	 * @param coordinates initial coordinate of the Knight
+	 */
 	public Knight(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
 			new Movement[]{
@@ -20,11 +26,20 @@ public class Knight extends Piece {
 		);
 	}
 
+	/**
+	 * Gets the visual type of the piece.
+	 *
+	 * @return the type of the piece
+	 */
 	@Override
 	public PieceType getGraphicalType() {
 		return PieceType.KNIGHT;
 	}
 
+	/**
+	 * toString value for the class
+	 * @return the text value for the class ("Knight" here)
+	 */
 	public String toString(){
 		return "Knight";
 	}

@@ -19,6 +19,13 @@ public class DirectionMovementRestriction implements Movement {
 		this.color = color;
 	}
 
+	/**
+	 * Checks that a piece moves in it's allowed direction.
+	 *
+	 * @param from the starting position
+	 * @param to   the target position
+	 * @return true if the move is allowed and false otherwise
+	 */
 	@Override
 	public boolean canMove(Coordinates from, Coordinates to) {
 		return switch (color) {

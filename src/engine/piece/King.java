@@ -12,6 +12,11 @@ import engine.movements.*;
 public class King extends FirstMovePiece {
 	private static final int CASTLE_DIST = 2;
 
+	/**
+	 * Constructor for the King Class
+	 * @param color color of the King
+	 * @param coordinates initial coordinate of the King
+	 */
 	public King(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
 			new Movement[]{
@@ -24,11 +29,23 @@ public class King extends FirstMovePiece {
 		);
 	}
 
+	/**
+	 * Gets the visual type of the piece.
+	 *
+	 * @return the type of the piece
+	 */
 	@Override
 	public PieceType getGraphicalType() {
 		return PieceType.KING;
 	}
 
+	/**
+	 * This method is used to implement special moves that don't fall in the piece's default moveset. In the king's
+	 * case, it will verify if a castle is tried.
+	 *
+	 * @param dest the target position
+	 * @return true if the move is allowed
+	 */
 	@Override
 	public boolean isExceptionalMoveAllowed(Coordinates dest) {
 		if (hasMoved()) return false;
@@ -39,6 +56,10 @@ public class King extends FirstMovePiece {
 		return isLeftRook || isRightRook;
 	}
 
+	/**
+	 * toString value for the class
+	 * @return the text value for the class ("King" here)
+	 */
 	public String toString(){
 		return "King";
 	}

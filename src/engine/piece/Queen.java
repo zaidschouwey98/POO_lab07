@@ -12,6 +12,12 @@ import engine.movements.Movement;
  * Queens can move any number of squares in a line or diagonally.
  */
 public class Queen extends Piece {
+	/**
+	 * Constructor for the Queen class
+	 *
+	 * @param color       color of the Queen
+	 * @param coordinates initial coordinate of the Queen
+	 */
 	public Queen(PlayerColor color, Coordinates coordinates) {
 		super(color, coordinates,
 			new Movement[]{
@@ -22,10 +28,20 @@ public class Queen extends Piece {
 		);
 	}
 
+	/**
+	 * Gets the visual type of the piece.
+	 *
+	 * @return the type of the piece
+	 */
 	@Override
 	public PieceType getGraphicalType() {
 		return PieceType.QUEEN;
 	}
+
+	/**
+	 * toString value for the class
+	 * @return the text value for the class ("Queen" here)
+	 */
 	public String toString(){
 		return "Queen";
 	}

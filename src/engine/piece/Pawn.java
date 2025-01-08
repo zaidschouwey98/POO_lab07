@@ -12,56 +12,96 @@ import engine.movements.*;
  */
 public class Pawn extends FirstMovePiece {
 
-	private static final int LONG_JUMP_DIST = 2;
-	private final Movement[] captureRestrictions;
-	private boolean capturableByEnpassant = false;
+    private static final int LONG_JUMP_DIST = 2;
+    private final Movement[] captureRestrictions;
+    private boolean capturableByEnpassant = false;
 
-	public Pawn(PlayerColor color, Coordinates coordinates) {
-		super(color, coordinates,
-			new Movement[]{
-				new AxialMovement()
-			},
-			new Movement[]{
-				new DirectionMovementRestriction(color),
-				new RadiusMovementRestriction(1)  // Radius changed to 1 after first move
-			}
-		);
-		captureRestrictions = new Movement[]{
-			new DirectionMovementRestriction(color),
-			new RadiusMovementRestriction(1),
-			new DiagonalMovement()
-		};
-	}
+    /**
+     * Constructor for the Pawn class
+     *
+     * @param color       color of the Pawn
+     * @param coordinates initial coordinate of the Pawn
+     */
+    public Pawn(PlayerColor color, Coordinates coordinates) {
+        super(color, coordinates,
+                new Movement[]{
+                        new AxialMovement()
+                },
+                new Movement[]{
+                        new DirectionMovementRestriction(color),
+                        new RadiusMovementRestriction(1)  // Radius changed to 1 after first move
+                }
+        );
+        captureRestrictions = new Movement[]{
+                new DirectionMovementRestriction(color),
+                new RadiusMovementRestriction(1),
+                new DiagonalMovement()
+        };
+    }
 
-	public boolean isCapturableByEnpassant() {
-		return this.capturableByEnpassant;
-	}
+    /**
+     * Gets the capturableByEnpassant attribute of the pawn.
+     *
+     * @return the value
+     */
+    public boolean isCapturableByEnpassant() {
+        return this.capturableByEnpassant;
+    }
 
-	public void setCapturableByEnpassant(boolean capturableByEnpassant) {
-		this.capturableByEnpassant = capturableByEnpassant;
-	}
+    /**
+     * Sets the capturableByEnpassant attribute of the pawn.
+     *
+     * @param capturableByEnpassant the value to set
+     */
+    public void setCapturableByEnpassant(boolean capturableByEnpassant) {
+        this.capturableByEnpassant = capturableByEnpassant;
+    }
 
-	@Override
-	public boolean isExceptionalMoveAllowed(Coordinates dest) {
-		int jumpDistance = LONG_JUMP_DIST;
-		if (getColor() == PlayerColor.BLACK) jumpDistance *= -1;
+    /**
+     * This method is used to implement special moves that don't fall in the piece's default moveset. In the pawn's case,
+     * it will try to move to squares forward.
+     *
+     * @param dest the target position
+     * @return true if the move is allowed
+     */
+    @Override
+    public boolean isExceptionalMoveAllowed(Coordinates dest) {
+        int jumpDistance = LONG_JUMP_DIST;
+        if (getColor() == PlayerColor.BLACK) jumpDistance *= -1;
 
-		return !hasMoved() && dest.equals(getCoordinates().move(0, jumpDistance));
-	}
+        return !hasMoved() && dest.equals(getCoordinates().move(0, jumpDistance));
+    }
 
-	@Override
-	public boolean canCaptureAt(Coordinates at) {
-		for (var movement : captureRestrictions) {
-			if (!movement.canMove(getCoordinates(), at)) return false;
-		}
-		return true;
-	}
+    /**
+     * Check if the pawn could capture at the destination. Does not cover en passant.
+     *
+     * @param destination the target of the capture
+     * @return boolean that represents if the piece can capture at dest
+     */
+    @Override
+    public boolean canCaptureAt(Coordinates destination) {
+        for (var movement : captureRestrictions) {
+            if (!movement.canMove(getCoordinates(), destination)) return false;
+        }
+        return true;
+    }
 
-	@Override
-	public PieceType getGraphicalType() {
-		return PieceType.PAWN;
-	}
-	public String toString(){
-		return "Pawn";
-	}
+    /**
+     * Gets the visual type of the piece.
+     *
+     * @return the type of the piece
+     */
+    @Override
+    public PieceType getGraphicalType() {
+        return PieceType.PAWN;
+    }
+
+    /**
+     * toString value for the class
+     *
+     * @return the text value for the class ("Pawn" here)
+     */
+    public String toString() {
+        return "Pawn";
+    }
 }
