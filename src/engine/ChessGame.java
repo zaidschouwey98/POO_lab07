@@ -26,7 +26,7 @@ public class ChessGame implements ChessController {
 		this.view = view;
 		view.startView();
 
-		updateView(board);
+		updateView();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class ChessGame implements ChessController {
 			board.removePiece(movingPiece);
 			board.addPiece(choice.piece());
 		}
-		updateView(board);
+		updateView();
 
 		return true;
 	}
@@ -97,15 +97,14 @@ public class ChessGame implements ChessController {
 			}
 		}
 
-		updateView(board);
+		updateView();
 	}
 
 	/**
 	 * Updates the chessboard display to show the current state of the game.
 	 *
-	 * @param board the current state of the game board
 	 */
-	private void updateView(Board board) {
+	private void updateView() {
 		for (int i = 0; i < 8; ++i) {
 			for (int j = 0; j < 8; ++j) {
 				Piece p = board.getPieceAt(new Coordinates(i, j));
