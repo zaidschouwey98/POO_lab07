@@ -22,5 +22,9 @@ public class Bishop extends Piece {
 	public PieceType getGraphicalType() {
 		return PieceType.BISHOP;
 	}
+
+	public String toString(){
+		return "Bishop";
+	}
 }
 

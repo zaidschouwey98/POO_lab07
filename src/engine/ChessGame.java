@@ -127,7 +127,7 @@ public class ChessGame implements ChessController {
 
 		@Override
 		public String textValue() {
-			return piece.getClass().getSimpleName();
+			return piece.toString();
 		}
 	}
 }
