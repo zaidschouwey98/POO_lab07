@@ -24,4 +24,7 @@ public class Rook extends FirstMovePiece {
 	public PieceType getGraphicalType() {
 		return PieceType.ROOK;
 	}
+	public String toString(){
+		return "Rook";
+	}
 }

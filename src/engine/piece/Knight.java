@@ -24,4 +24,8 @@ public class Knight extends Piece {
 	public PieceType getGraphicalType() {
 		return PieceType.KNIGHT;
 	}
+
+	public String toString(){
+		return "Knight";
+	}
 }

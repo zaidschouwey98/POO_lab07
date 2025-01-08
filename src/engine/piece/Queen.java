@@ -26,4 +26,7 @@ public class Queen extends Piece {
 	public PieceType getGraphicalType() {
 		return PieceType.QUEEN;
 	}
+	public String toString(){
+		return "Queen";
+	}
 }
