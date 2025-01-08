@@ -64,14 +64,14 @@ Un diagramme UML a été créé pour montrer les relations entre les classes. Il
 ## 6. Choix de conception
 
 ### Organisation orientée objet
-- **Abstraction** : Les classes abstraites comme `Piece` simplifient l'ajout de nouvelle pièces.
+- **Abstraction** : Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces.
 - **Responsabilités** : Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour controler le jeu.
 - **Flexibilité** : Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement.
 
 ---
 
 ## 7. Conclusion
-Le projet respecte les bonnes pratique du développement Java et les consignes données. Les tests montrent que toutes les fonctionnalités fonctionnent correctement. Le diagramme UML est clair et correspond au code.
+Le projet respecte les bonnes pratiques du développement Java et les consignes données. Les tests montrent que toutes les fonctionnalités fonctionnent correctement. Le diagramme UML est clair et correspond au code.
 
 ---
 
