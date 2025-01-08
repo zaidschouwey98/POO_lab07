@@ -17,7 +17,9 @@ public abstract class FirstMovePiece extends Piece {
 	@Override
 	public void moveTo(Coordinates destination) {
 		super.moveTo(destination);
-
+		if(this instanceof Pawn){
+			((Pawn) this).setCapturableByEnpassant(true);
+		}
 		hasMoved = true;
 	}
 
