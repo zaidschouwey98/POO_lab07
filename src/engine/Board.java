@@ -9,7 +9,7 @@ import engine.piece.Rook;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+
 /**
  * Represents the chessboard, manages the state, pieces, and movement.
  * Handles castling, en passant, and checking for checks.
@@ -24,8 +24,10 @@ public class Board {
 	private final int width;
 	private final int height;
 
-	private final King[] kings = new King[2];
-	private final Rook[][] rooks = new Rook[2][2];
+	private final King[] kings = new King[2];	// to quickly get the positions of the kings when needed
+	private final Rook[][] castlableRooks = new Rook[2][2];
+
+
 	private boolean check = false;
 
 	private final List<List<Piece>> pieces = List.of(
@@ -57,11 +59,25 @@ public class Board {
 	 * @param piece the piece to be added to the board
 	 */
 	public void addPiece(Piece piece) {
+		addPiece(piece, false);
+	}
+
+	/**
+	 * Adds a piece to the board and updates the board state accordingly.
+	 *
+	 * @param piece the piece to be added to the board
+	 * @param gameStarted will indicate if the game started or not, so that board knows if piece is added due to promotion
+	 * or not
+	 */
+	public void addPiece(Piece piece, boolean gameStarted) {
 		pieces.get(piece.getColor().ordinal()).add(piece);
+		if (gameStarted) {
+			return;
+		}
 		if (piece instanceof King)
 			kings[piece.getColor().ordinal()] = (King) piece;
 		if (piece instanceof Rook)
-			add(rooks[piece.getColor().ordinal()], piece);
+			add(castlableRooks[piece.getColor().ordinal()], piece);
 	}
 
 	/**
@@ -91,7 +107,7 @@ public class Board {
 		// Castle
 		if (!check && p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
 			int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
-			Rook rook = rooks[colorPlaying.ordinal()][rookId];
+			Rook rook = castlableRooks[colorPlaying.ordinal()][rookId];
 
 			if (!castle(king, rook)) {
 				// Cancel move

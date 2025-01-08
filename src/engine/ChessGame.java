@@ -57,7 +57,7 @@ public class ChessGame implements ChessController {
 			);
 
 			board.removePiece(movingPiece);
-			board.addPiece(choice.piece());
+			board.addPiece(choice.piece(),true);
 		}
 		updateView();
 

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
+<classDiagram>
+  <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="">
+    <entity entityType="CLASS" id="22893" isAbstract="false" name="KnightMovement" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="canMove" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="22832" isAbstract="false" name="DirectionMovementRestriction" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="canMove" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="22771" isAbstract="false" name="DiagonalMovement" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="canMove" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="22710" isAbstract="false" name="AxialMovement" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="canMove" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+      </method>
+    </entity>
+    <inheritance id="18964" innerClass="true">
+      <child>18955</child>
+      <parent>18824</parent>
+    </inheritance>
+    <entity entityType="CLASS" id="20846" isAbstract="false" name="Board" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="true" name="WHITE" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="true" name="BLACK" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="true" name="DEFAULT_WIDTH" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="true" name="DEFAULT_HEIGHT" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="true" name="CASTLE_DIST" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="width" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="height" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="kings" type="King[]" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="rooks" type="Rook[][]" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="check" type="boolean" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="pieces" type="List&lt;List&lt;Piece&gt;&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="attribute" type="void" visibility="PRIVATE"/>
+      <method isAbstract="false" isStatic="false" name="addPiece" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="Piece" type="Piece"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="removePiece" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="piece" type="Piece"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="move" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+        <variable const="false" name="colorPlaying" type="PlayerColor"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="isPathObstructed" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="dest" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="getPieceAt" returnType="Piece" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="pos" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="isChecked" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="verifyCheck" returnType="boolean" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="opponentColor" type="PlayerColor"/>
+        <variable const="false" name="position" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="isInBoundaries" returnType="boolean" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="p" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="boolean" returnType="isMovementValid" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="p" type="Piece"/>
+        <variable const="false" name="target" type="Piece"/>
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+        <variable const="false" name="colorPlaying" type="PlayerColor"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="add" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="array" type="Piece[]"/>
+        <variable const="false" name="p" type="Piece"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="boolean" returnType="castle" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="king" type="King"/>
+        <variable const="false" name="p" type="Rook"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="resetEnPassantFlags" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="p" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="isEnPassantCapture" returnType="boolean" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="from" type="Coordinates"/>
+        <variable const="false" name="to" type="Coordinates"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="20772" isAbstract="false" name="FirstMovePiece" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="hasMoved" type="boolean" visibility="PRIVATE"/>
+      <method isAbstract="false" isStatic="false" name="moveTo" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="destination" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="hasMoved" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="20583" isAbstract="false" name="King" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="true" name="CASTLE_DIST" type="int" visibility="PRIVATE"/>
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="isExceptionalMoveAllowed" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="dest" type="Coordinates"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="20552" isAbstract="false" name="Queen" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="20551" isAbstract="false" name="Rook" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="20550" isAbstract="false" name="Bishop" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="20538" isAbstract="false" name="Knight" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="18824" isAbstract="false" name="ChessGame" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="view" type="ChessView" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="colorPlaying" type="PlayerColor" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="board" type="Board" visibility="PRIVATE"/>
+      <method isAbstract="false" isStatic="false" name="start" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="move" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="fromX" type="int"/>
+        <variable const="false" name="fromY" type="int"/>
+        <variable const="false" name="toX" type="int"/>
+        <variable const="false" name="toY" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="newGame" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="updateView" returnType="void" view="DEFAULT" visibility="PRIVATE"/>
+    </entity>
+    <entity entityType="CLASS" id="18955" isAbstract="false" name="PieceUserChoice" visibility="PUBLIC">
+      <method isAbstract="false" isStatic="false" name="textValue" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="19108" isAbstract="true" name="Piece" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="color" type="PlayerColor" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="coordinates" type="Coordinates" visibility="PROTECTED"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="pieceMovements" type="Movement[]" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="pieceMovementRestrictions" type="Movement[]" visibility="PRIVATE"/>
+      <method isAbstract="true" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="canMoveTo" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="isExceptionalMoveAllowed" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="canCaptureAt" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="moveTo" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="getColor" returnType="PlayerColor" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="true" isStatic="false" name="getCoordinates" returnType="Coordinates" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="19109" isAbstract="false" name="Pawn" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="true" name="LONG_JUMP_DIST" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="captureRestrictions" type="Movement[]" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="capturableByEnpassant" type="boolean" visibility="PRIVATE"/>
+      <method isAbstract="false" isStatic="false" name="isCapturableByEnpassant" returnType="boolean" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="setCapturableByEnpassant" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="capturableByEnpassant" type="boolean"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="isExceptionalMoveAllowed" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="at" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="canCaptureAt" returnType="boolean" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="dest" type="Coordinates"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="getGraphicalType" returnType="PieceType" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+  </diagramElements>
+  <umlView grid="10" name="Main view" open="true">
+    <relationView color="-12566464" relationId="18964">
+      <line>
+        <point>
+          <x>471</x>
+          <y>611</y>
+        </point>
+        <point>
+          <x>471</x>
+          <y>501</y>
+        </point>
+      </line>
+    </relationView>
+    <componentView color="-2079" componentID="19109" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>0</x>
+        <y>1050</y>
+        <w>300</w>
+        <h>175</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="19108" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>160</x>
+        <y>720</y>
+        <w>320</w>
+        <h>220</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="18955" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>470</x>
+        <y>610</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="18824" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>270</x>
+        <y>340</y>
+        <w>360</w>
+        <h>160</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20538" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>390</x>
+        <y>1050</y>
+        <w>220</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20550" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>680</x>
+        <y>1050</y>
+        <w>220</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20551" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>970</x>
+        <y>1050</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20552" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1190</x>
+        <y>1050</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20583" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1430</x>
+        <y>1060</y>
+        <w>250</w>
+        <h>100</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20772" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>680</x>
+        <y>800</y>
+        <w>220</w>
+        <h>100</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="20846" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>760</x>
+        <y>50</y>
+        <w>660</w>
+        <h>430</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="22710" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1200</x>
+        <y>640</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="22771" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1420</x>
+        <y>640</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="22832" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1590</x>
+        <y>650</y>
+        <w>240</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="22893" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1880</x>
+        <y>690</y>
+        <w>150</w>
+        <h>70</h>
+      </geometry>
+    </componentView>
+    <note color="-2079" content="PieceUserChoice implements ChessvView.UserChoice">
+      <noteGeometry>
+        <x>740</x>
+        <y>580</y>
+        <w>152</w>
+        <h>60</h>
+      </noteGeometry>
+    </note>
+    <note color="-2079" content="ChessGame implements ChessController">
+      <noteGeometry>
+        <x>670</x>
+        <y>340</y>
+        <w>100</w>
+        <h>60</h>
+      </noteGeometry>
+    </note>
+  </umlView>
+</classDiagram>
