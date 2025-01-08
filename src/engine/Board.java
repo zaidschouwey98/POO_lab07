@@ -105,7 +105,9 @@ public class Board {
         if (!movementWasValid) return false;
 
         // Castle
-        if (!check && p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
+        if (p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
+            // we detected that king is trying to castle
+            if (check) return false;
             int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
             Rook rook = castlableRooks[colorPlaying.ordinal()][rookId];
 
@@ -291,7 +293,7 @@ public class Board {
      * @return true if the castling move was successful and false otherwise
      */
     private boolean castle(King king, Rook rook) {
-        if (king.hasMoved() || rook.hasMoved()) return false;
+        if (check || king.hasMoved() || rook.hasMoved()) return false;
 
         int d = rook.getCoordinates().x() < king.getCoordinates().x() ? -1 : 1;
         var to = king.getCoordinates().move(d * CASTLE_DIST, 0);
