@@ -107,16 +107,11 @@ public class Board {
         // Castle
         if (p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
             // we detected that king is trying to castle
-            if (check) return false;
+
             int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
             Rook rook = castlableRooks[colorPlaying.ordinal()][rookId];
 
             if (!castle(king, rook)) {
-                // Cancel move
-                if (target != null)
-                    target.moveTo(to);
-                p.moveTo(from);
-
                 return false;
             }
             return true;
@@ -135,7 +130,7 @@ public class Board {
                 target.moveTo(new Coordinates(-1, -1));
             p.moveTo(to);
 
-            // Control if any opponent piece can capture the king
+            // Control if any opponent piece can capture the king (check for pins)
             Coordinates playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
             if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
                 // Cancel move
@@ -293,7 +288,7 @@ public class Board {
      * @return true if the castling move was successful and false otherwise
      */
     private boolean castle(King king, Rook rook) {
-        if (check || king.hasMoved() || rook.hasMoved()) return false;
+        if (king.hasMoved() || rook.hasMoved()) return false;
 
         int d = rook.getCoordinates().x() < king.getCoordinates().x() ? -1 : 1;
         var to = king.getCoordinates().move(d * CASTLE_DIST, 0);
@@ -301,6 +296,9 @@ public class Board {
         if (isPathObstructed(rook.getCoordinates(), king.getCoordinates())) return false;
 
         // Check if an opponent can reach one of the squares on the path
+
+        // TODO ou ajouter "|| check" en début de fonction
+        if (verifyCheck(king.getColor().toggle(), king.getCoordinates().move(0, 0))) return false;
         for (var it = king.getCoordinates().move(d, 0); !it.equals(to); it = it.move(d, 0)) {
             if (verifyCheck(king.getColor().toggle(), it)) return false;
         }
