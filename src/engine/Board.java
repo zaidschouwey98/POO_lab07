@@ -117,7 +117,6 @@ public class Board {
 
 				return false;
 			}
-
 			return true;
 		} else {
 			// Handle en passant for pawns
@@ -305,6 +304,10 @@ public class Board {
 		return true;
 	}
 
+	/**
+	 * Reset the en passant flags for a given color
+	 * @param playerColor the color to reset the en passant flags
+	 */
 	private void resetEnPassantFlags(int playerColor) {
 		for (Piece piece : pieces.get(playerColor)) {
 			if (piece instanceof Pawn) {
@@ -313,6 +316,12 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Verifies is a capture is an en passant capture
+	 * @param from start coordinates
+	 * @param to   destination coordinates
+	 * @return boolean value indicating the result
+	 */
 	private boolean isEnPassantCapture(Coordinates from, Coordinates to) {
 		Piece p = getPieceAt(from);
 		if (!(p instanceof Pawn)) return false;
