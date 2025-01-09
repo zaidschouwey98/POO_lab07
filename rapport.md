@@ -1,4 +1,5 @@
-# Rapport du Laboratoire 07 - Chess
+# Rapport du Laboratoire 07 - Chess 
+*Schouwey Zaid, Theubet Camille, Yukhanov Artur, 09.01.2025*
 
 ## 1. Introduction
 Ce document explique le travail réalisé sur le laboratoire 07 Chess. Il montre les choix de conception, les tests effectués et les résultats obtenu.
@@ -68,6 +69,11 @@ Un diagramme UML a été créé pour montrer les relations entre les classes. Il
 - **Responsabilités** : Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour contrôler le jeu.
 - **Flexibilité** : Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement.
 
+#### Abstraction
+
+Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces.
+
+
 #### Mouvement de pièces
 
 Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement, mais
@@ -77,18 +83,21 @@ la dame, et le roi.
 #### Actions liées à l'état du plateau
 
 Les actions liées à l'état du plateau, comme le fait de ne pas bouger une pièce alors que cela mettrait son roi en échec,
-cela a été implémenté côté Board.java, car celà nécessite une vue d'ensemble d'une partie.
+cela a été implémenté côté `Board.java`, car celà nécessite une vue d'ensemble d'une partie.
 
 
 #### Classe FirstMovePiece.java
 
-
+Nous avons remarqué que pour le pion, la tour, et le roi, le fait que la pièce ait bougé pouvait avoir une importance pour
+certaines actions. La classe FirstMovePiece répond à ce besoin en passant son attribut hasMoved à true à l'appel de moveTo.
 
 
 ---
 
 ## 7. Conclusion
-Le projet respecte les bonnes pratiques du développement Java et les consignes données. Les tests montrent que toutes les fonctionnalités fonctionnent correctement. Le diagramme UML est clair et correspond au code.
+Le projet respecte les bonnes pratiques du développement Java et les consignes données. 
+Les tests montrent que toutes les fonctionnalités fonctionnent correctement. 
+Le diagramme UML est clair et correspond au code.
 
 ---
 

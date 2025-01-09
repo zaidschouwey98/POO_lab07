@@ -109,10 +109,7 @@ public class Board {
             int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
             Rook rook = castlableRooks[colorPlaying.ordinal()][rookId];
 
-            if (!castle(king, rook)) {
-                return false;
-            }
-            return true;
+            return castle(king, rook);
         } else {
             // Handle en passant for pawns
             if (isEnPassantCapture(from, to)) {
