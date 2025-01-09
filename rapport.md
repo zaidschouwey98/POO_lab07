@@ -1,5 +1,5 @@
 # Rapport du Laboratoire 07 - Chess 
-*Schouwey Zaid, Theubet Camille, Yukhanov Artur, 09.01.2025*
+*Schouwey Zaid, Theubet Camille, Yukhanov Artur*
 
 ## 1. Introduction
 Ce document explique le travail réalisé sur le laboratoire 07 Chess. Il montre les choix de conception, les tests effectués et les résultats obtenu.
