@@ -8,7 +8,7 @@ import engine.movements.Movement;
  * This abstract class represents a piece that tracks if it has already moved since its creation.
  */
 public abstract class FirstMovePiece extends Piece {
-    private boolean hasMoved = false;
+    protected boolean hasMoved = false;
 
     /**
      * Constructor for the FirstMovePiece class
@@ -31,9 +31,6 @@ public abstract class FirstMovePiece extends Piece {
     @Override
     public void moveTo(Coordinates destination) {
         super.moveTo(destination);
-        if (this instanceof Pawn && !hasMoved) {
-            ((Pawn) this).setCapturableByEnpassant(true);
-        }
         hasMoved = true;
     }
 

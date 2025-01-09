@@ -96,6 +96,13 @@ public class Pawn extends FirstMovePiece {
         return PieceType.PAWN;
     }
 
+    public void moveTo(Coordinates destination) {
+        if (!hasMoved && Math.abs(this.getCoordinates().y() - destination.y()) == 2) {
+            ((Pawn) this).setCapturableByEnpassant(true);
+        }
+        super.moveTo(destination);
+    }
+
     /**
      * toString value for the class
      *
