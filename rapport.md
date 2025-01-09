@@ -64,11 +64,6 @@ Un diagramme UML a été créé pour montrer les relations entre les classes. Il
 
 ## 6. Choix de conception
 
-### Organisation orientée objet
-- **Abstraction** : Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces.
-- **Responsabilités** : Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour contrôler le jeu.
-- **Flexibilité** : Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement.
-
 #### Abstraction
 
 Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces, et forcent chaque pièce à implémenter certaines
