@@ -71,14 +71,23 @@ Un diagramme UML a été créé pour montrer les relations entre les classes. Il
 
 #### Abstraction
 
-Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces.
+Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces, et forcent chaque pièce à implémenter certaines
+méthodes indispensables, tout en regroupant des méthodologies qui sont les mêmes, peu importe la pièce. 
+Par exemple, la plupart des pièces peuvent capturer comme elles bougent. Mais le pion étant une exception notable, il ré-implémente
+la méthode `canCaptureAt`.
 
+
+#### Responsabilités
+
+Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour contrôler le jeu.
 
 #### Mouvement de pièces
 
 Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement, mais
 surtout de partager des types de mouvements entre les pièces. Ainsi le mouvement "diagonal" est partagé entre le fou,
 la dame, et le roi.
+Et pour savoir une pièce peut effectuer le déplacement qu'elle aimerait faire, on regarde simplement si le mouvement désiré
+est permis par au moins un Movement 
 
 #### Actions liées à l'état du plateau
 
