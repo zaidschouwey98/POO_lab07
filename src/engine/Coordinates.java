@@ -20,6 +20,11 @@ public record Coordinates(int x, int y) {
 		return new Coordinates(rx, ry);
 	}
 
+	/**
+	 * toString for coordinates. Displays the coordinates as stored and NOT as chess coordinates
+	 * example : b3 is (1, 2)
+	 * @return the stringed coordinate
+	 */
 	@Override
 	public String toString() {
 		return String.format("(%s, %s)", x(), y());
