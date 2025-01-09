@@ -30,28 +30,28 @@ Ce document explique le travail réalisé sur le laboratoire 07 Chess. Il montre
 
 Les tests suivants ont été effectués:
 
-| Fonctionnalité                                             | Résultat          |
-|------------------------------------------------------------|-------------------|
-| Pion: 1er mouvement à deux cases                           | OK                |
-| Pion: prise d'une pièce adverse                            | OK                |
-| Pion: prise en passant                                     | OK                |
-| Pion: prise en passant contre un pion qui a bougé 2x       | Bloqué            |
-| Pion: prise en passant contre une pièce autre qu'un pion   | Bloqué            |
-| Pion: déplacement en arrière                               | Bloqué            |
-| Pion: promotion                                            | OK                |
-| Pion: promotion en une 3ème tour                           | OK                |
-| Petit roque                                                | OK                |
-| Grand roque                                                | OK                |
-| Roque en échec                                             | Fonctionnel (bad) |
-| Roque avec 1+ case du chemin menacée                       | Bloqué            |
-| Roque avec la tour ou le roi qui a déjà bougé              | Bloqué            |
-| Roi: déplacement de 2+ cases                               | Bloqué            |
-| Roi: déplacement sur une case menacée                      | Bloqué            |
-| Général: déplacement standard                              | OK                |
-| Général: déplacement sur une pièce amie                    | Bloqué            |
-| Général: déplacement lors du tour adverse                  | Bloqué            |
-| Général: déplacement qui met le roi ami en échec           | Bloqué            |
-| Général (sauf cavalier): déplacement obstrué par une pièce | Bloqué            |
+| Fonctionnalité                                             | Résultat |
+|------------------------------------------------------------|----------|
+| Pion: 1er mouvement à deux cases                           | OK       |
+| Pion: prise d'une pièce adverse                            | OK       |
+| Pion: prise en passant                                     | OK       |
+| Pion: prise en passant contre un pion qui a bougé 2x       | Bloqué   |
+| Pion: prise en passant contre une pièce autre qu'un pion   | Bloqué   |
+| Pion: déplacement en arrière                               | Bloqué   |
+| Pion: promotion                                            | OK       |
+| Pion: promotion en une 3ème tour                           | OK       |
+| Petit roque                                                | OK       |
+| Grand roque                                                | OK       |
+| Roque en échec                                             | Bloqué   |
+| Roque avec 1+ case du chemin menacée                       | Bloqué   |
+| Roque avec la tour ou le roi qui a déjà bougé              | Bloqué   |
+| Roi: déplacement de 2+ cases                               | Bloqué   |
+| Roi: déplacement sur une case menacée                      | Bloqué   |
+| Général: déplacement standard                              | OK       |
+| Général: déplacement sur une pièce amie                    | Bloqué   |
+| Général: déplacement lors du tour adverse                  | Bloqué   |
+| Général: déplacement qui met le roi ami en échec           | Bloqué   |
+| Général (sauf cavalier): déplacement obstrué par une pièce | Bloqué   |
 
 ---
 
@@ -65,8 +65,25 @@ Un diagramme UML a été créé pour montrer les relations entre les classes. Il
 
 ### Organisation orientée objet
 - **Abstraction** : Les classes abstraites comme `Piece` simplifient l'ajout de nouvelles pièces.
-- **Responsabilités** : Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour controler le jeu.
+- **Responsabilités** : Chaque classe a un role précis. Par exemple : `Board` pour gérer le plateau, `ChessGame` pour contrôler le jeu.
 - **Flexibilité** : Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement.
+
+#### Mouvement de pièces
+
+Les mouvements sont gérés avec une interface `Movement`, ce qui permet d'ajouter des types de déplacement facilement, mais
+surtout de partager des types de mouvements entre les pièces. Ainsi le mouvement "diagonal" est partagé entre le fou,
+la dame, et le roi.
+
+#### Actions liées à l'état du plateau
+
+Les actions liées à l'état du plateau, comme le fait de ne pas bouger une pièce alors que cela mettrait son roi en échec,
+cela a été implémenté côté Board.java, car celà nécessite une vue d'ensemble d'une partie.
+
+
+#### Classe FirstMovePiece.java
+
+
+
 
 ---
 

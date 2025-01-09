@@ -31,7 +31,7 @@ public class Board {
     private boolean check = false;
 
     private final List<List<Piece>> pieces = List.of(
-            new LinkedList<>(), // white pieces
+            new LinkedList<>(),   // white pieces
             new LinkedList<>()    // black pieces
     );
 
@@ -74,10 +74,8 @@ public class Board {
         if (gameStarted) {
             return;
         }
-        if (piece instanceof King)
-            kings[piece.getColor().ordinal()] = (King) piece;
-        if (piece instanceof Rook)
-            add(castlableRooks[piece.getColor().ordinal()], piece);
+        if (piece instanceof King) kings[piece.getColor().ordinal()] = (King) piece;
+        if (piece instanceof Rook) add(castlableRooks[piece.getColor().ordinal()], piece);
     }
 
     /**
@@ -111,8 +109,7 @@ public class Board {
 
             if (!castle(king, rook)) {
                 // Cancel move
-                if (target != null)
-                    target.moveTo(to);
+                if (target != null) target.moveTo(to);
                 p.moveTo(from);
 
                 return false;
@@ -129,16 +126,14 @@ public class Board {
             }
 
             // Normal move
-            if (target != null)
-                target.moveTo(new Coordinates(-1, -1));
+            if (target != null) target.moveTo(new Coordinates(-1, -1));
             p.moveTo(to);
 
             // Control if any opponent piece can capture the king
             Coordinates playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
             if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
                 // Cancel move
-                if (target != null)
-                    target.moveTo(to);
+                if (target != null) target.moveTo(to);
                 p.moveTo(from);
 
                 return false;
@@ -191,15 +186,12 @@ public class Board {
      */
     public Piece getPieceAt(Coordinates pos) {
         if (pos == null) throw new NullPointerException("Coordinates cannot be null");
-        if (!isInBoundaries(pos))
-            throw new IllegalArgumentException(String.format("Invalid coordinates %s.", pos));
+        if (!isInBoundaries(pos)) throw new IllegalArgumentException(String.format("Invalid coordinates %s.", pos));
         for (Piece p : pieces.get(WHITE)) {
-            if (pos.equals(p.getCoordinates()))
-                return p;
+            if (pos.equals(p.getCoordinates())) return p;
         }
         for (Piece p : pieces.get(BLACK)) {
-            if (pos.equals(p.getCoordinates()))
-                return p;
+            if (pos.equals(p.getCoordinates())) return p;
         }
 
         return null;
