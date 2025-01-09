@@ -763,7 +763,7 @@ import engine.movements.Movement;
  * This abstract class represents a piece that tracks if it has already moved since its creation.
  */
 public abstract class FirstMovePiece extends Piece {
-    private boolean hasMoved = false;
+    protected boolean hasMoved = false;
 
     /**
      * Constructor for the FirstMovePiece class
@@ -786,9 +786,6 @@ public abstract class FirstMovePiece extends Piece {
     @Override
     public void moveTo(Coordinates destination) {
         super.moveTo(destination);
-        if (this instanceof Pawn && !hasMoved) {
-            ((Pawn) this).setCapturableByEnpassant(true);
-        }
         hasMoved = true;
     }
 
@@ -801,7 +798,6 @@ public abstract class FirstMovePiece extends Piece {
         return hasMoved;
     }
 }
-
 
 ```
 
@@ -1083,6 +1079,13 @@ public class Pawn extends FirstMovePiece {
         return PieceType.PAWN;
     }
 
+    public void moveTo(Coordinates destination) {
+        if (!hasMoved && Math.abs(this.getCoordinates().y() - destination.y()) == 2) {
+            ((Pawn) this).setCapturableByEnpassant(true);
+        }
+        super.moveTo(destination);
+    }
+
     /**
      * toString value for the class
      *
@@ -1092,7 +1095,6 @@ public class Pawn extends FirstMovePiece {
         return "Pawn";
     }
 }
-
 ```
 
 Queen.java
@@ -1398,6 +1400,5 @@ public class RadiusMovementRestriction implements Movement {
 ---
 
 ## 9. Annexes
-- **Code source** 
 - **Diagramme UML** 
 
