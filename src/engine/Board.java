@@ -103,15 +103,13 @@ public class Board {
         if (!movementWasValid) return false;
 
         // Castle
-        if (!check && p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
+        if (p instanceof King king && (to.equals(from.move(CASTLE_DIST, 0)) || to.equals(from.move(-CASTLE_DIST, 0)))) {
+            // we detected that king is trying to castle
+
             int rookId = to.x() < king.getCoordinates().x() ? 0 : 1;
             Rook rook = castlableRooks[colorPlaying.ordinal()][rookId];
 
             if (!castle(king, rook)) {
-                // Cancel move
-                if (target != null) target.moveTo(to);
-                p.moveTo(from);
-
                 return false;
             }
             return true;
@@ -129,7 +127,7 @@ public class Board {
             if (target != null) target.moveTo(new Coordinates(-1, -1));
             p.moveTo(to);
 
-            // Control if any opponent piece can capture the king
+            // Control if any opponent piece can capture the king (check for pins)
             Coordinates playingKingCoordinates = kings[colorPlaying.ordinal()].getCoordinates();
             if (verifyCheck(colorPlaying.toggle(), playingKingCoordinates)) {
                 // Cancel move
@@ -291,6 +289,9 @@ public class Board {
         if (isPathObstructed(rook.getCoordinates(), king.getCoordinates())) return false;
 
         // Check if an opponent can reach one of the squares on the path
+
+        // TODO ou ajouter "|| check" en début de fonction
+        if (verifyCheck(king.getColor().toggle(), king.getCoordinates().move(0, 0))) return false;
         for (var it = king.getCoordinates().move(d, 0); !it.equals(to); it = it.move(d, 0)) {
             if (verifyCheck(king.getColor().toggle(), it)) return false;
         }
